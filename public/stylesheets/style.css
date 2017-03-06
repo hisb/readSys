@@ -1,0 +1,37 @@
+@charset "utf-8"; 
+@import url("/stylesheets/animate.css");
+@import url("/stylesheets/animate-tool.css");
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+article .divContainer {
+	position: relative; 
+	overflow: hidden;
+}
+.fh5co-post-entry article figure {
+	margin-bottom: 0;
+}
+.infor {
+	display: none; 
+	position: absolute; 
+	bottom: 0px;
+	left: 0; 
+	background-color: #fff; 
+	border-top: 2px solid #000; 
+	border-bottom: 2px solid #000; 
+	padding: 20px 0;
+}
+.classify {
+	border-radius: 100%; 
+	border: 1px solid #000; 
+	line-height: 206px;
+	height: 206px; 
+	overflow: hidden; 
+	background: url(./../images/pic_1.jpg) no-repeat center; 
+	background-size: 100%;
+}
+.classify figure {
+	background: linear-gradient(rgba(255,255,255,0), rgba(0,0,0,1));
+}
+
