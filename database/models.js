@@ -14,6 +14,7 @@ module.exports = {
         email: {type: String},
         phone: {type: String},
         adress: {type: String},
+        imgSrc:{type:String},
         selfdesc: {type: String}, //个人简介
         cdate: {type: Date},
         udate: {type: Date},
@@ -57,6 +58,12 @@ module.exports = {
             type: String,
             required: true
         },
+        readed:[//已经看过的人
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'user'
+            }
+        ],
         holder: { //正在借书的人
             type: String,
         },

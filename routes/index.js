@@ -1,101 +1,10 @@
 var express = require('express');
 var router = express.Router();
-
-//var homeData = [
-//    {
-//        type: '文学',
-//        id: 1,
-//        data: [
-//            {
-//                author: '贾平凹',
-//                imgSrc: 'images/literature/wenxue11.jpg',
-//                title: '自在独行',
-//                number: 9
-//            }, {
-//                author: '杨绛',
-//                imgSrc: 'images/literature/wenxue22.jpg',
-//                title: '我们仨',
-//                number: 9
-//            }, {
-//                author: '路遥',
-//                imgSrc: 'images/literature/wenxue33.jpg',
-//                title: '平凡的世界',
-//                number: 9
-//            }
-//        ]
-//    }, {
-//        type: '小说',
-//        id: 2,
-//        data: [
-//            {
-//                author: '加·泽文',
-//                imgSrc: 'images/novel/xiaoshuo11.jpg',
-//                title: '岛上书店',
-//                number: 9
-//            }, {
-//                author: '东野圭吾',
-//                imgSrc: 'images/novel/xiaoshuo22.jpg',
-//                title: '解忧杂货店',
-//                number: 9
-//            }, {
-//                author: '圣埃克苏佩里',
-//                imgSrc: 'images/novel/xiaoshuo33.jpg',
-//                title: '小王子',
-//                number: 9
-//            }
-//        ]
-//    }
-//];
-
-//var moreData = [
-//
-//    {
-//        author: '贾平凹',
-//        imgSrc: 'images/literature/wenxue11.jpg',
-//        title: '自在独行',
-//        number: 9
-//    }, {
-//        author: '杨绛',
-//        imgSrc: 'images/literature/wenxue22.jpg',
-//        title: '我们仨',
-//        number: 9
-//    }, {
-//        author: '路遥',
-//        imgSrc: 'images/literature/wenxue33.jpg',
-//        title: '平凡的世界',
-//        number: 9
-//    }, {
-//        author: '加·泽文',
-//        imgSrc: 'images/literature/wenxue44.jpg',
-//        title: '活着',
-//        number: 9
-//    }, {
-//        author: '东野圭吾',
-//        imgSrc: 'images/literature/wenxue55.jpg',
-//        title: '愿人生从容',
-//        number: 9
-//    }, {
-//        author: '圣埃克苏佩里',
-//        imgSrc: 'images/literature/wenxue66.jpg',
-//        title: '文学回憶録',
-//        number: 9
-//    }, {
-//        author: '圣埃克苏佩里',
-//        imgSrc: 'images/literature/wenxue77.jpg',
-//        title: '直到那一天',
-//        number: 9
-//    }, {
-//        author: '圣埃克苏佩里',
-//        imgSrc: 'images/literature/wenxue88.jpg',
-//        title: '小王子',
-//        number: 9
-//    }
-//];
+var path = require('path');
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.redirect("/login");
 });
-
 
 /**
  * 首页
@@ -103,7 +12,7 @@ router.get('/', function (req, res, next) {
 router.get("/home", function (req, res) {
     var categoryM = global.dbHandel.getModel("category");
     categoryM.find().populate("books").exec(function (err, categorys) {
-        console.log(JSON.stringify(categorys));
+        print(categorys);
         res.render("home", {title: 'Home', datas: categorys});
     });
 });
@@ -191,7 +100,7 @@ router.route("/register").get(function (req, res) {    // 到达此路径则渲�
     });
 });
 //修改用户信息
-router.route("/user/update").get(function (req, res) {
+router.route("/userUpdate").get(function (req, res) {
     var userId = sessionUserId(req, res);
     User.findById(userId, function (err, doc) {  //先把用户原有的信息填写到旧的表格
         res.render("update", {title: 'User update', data: doc});
@@ -228,7 +137,7 @@ router.route("/user/update").get(function (req, res) {
 
 
 //我分享的书列表
-router.get("/user/myshare", function (req, res) {
+router.get("/userMyshare", function (req, res) {
     var userId = sessionUserId(req, res);
     var user = global.dbHandel.getModel("user");
     user.findById(userId).populate("shareds").exec(function (err, doc) {
@@ -239,7 +148,7 @@ router.get("/user/myshare", function (req, res) {
 })
 
 //我参与排队的书列表
-router.get("/user/myhunger", function (req, res) {
+router.get("/userMyhunger", function (req, res) {
     var userId = sessionUserId(req, res);
     var user = global.dbHandel.getModel("user");
     user.findById(userId).populate("hungers").exec(function (err, doc) {
@@ -252,7 +161,7 @@ router.get("/user/myhunger", function (req, res) {
  * 目录相关
  */
 //书目录列表
-router.get("/category/list", function (req, res) {
+router.get("/categoryList", function (req, res) {
     var categoryM = global.dbHandel.getModel("category");
     categoryM.find(function (err, docs) {
         res.send(JSON.stringify(docs));
@@ -260,10 +169,10 @@ router.get("/category/list", function (req, res) {
 })
 
 //一个目录下书的列表
-router.get("/category/more/:categoryid", function (req, res) {
+router.get("/categoryMore", function (req, res) {
     var categoryM = global.dbHandel.getModel("category");
-    categoryM.findById(req.params.categoryid).populate("books").exec(function (err, categorys) {
-        console.log(JSON.stringify(categorys));
+    categoryM.findById(req.query.categoryid).populate("books").exec(function (err, categorys) {
+        print(categorys);
         res.render("more", {title: 'more', datas: categorys});
     });
 });
@@ -272,9 +181,9 @@ router.get("/category/more/:categoryid", function (req, res) {
  * 书籍相关
  */
 //分享书籍(添加)
-router.get("/book/share", function () {
+router.route("/bookShare").get(function () {
     res.render("share", {title: "share"});
-}).post("/book/share", function (req, res) {
+}).post(function (req, res) {
     var userId = sessionUserId(req, res);
     var book = {
         title: req.body.title,
@@ -313,12 +222,12 @@ router.get("/book/share", function () {
 });
 
 //修改
-router.get("/book/update/:bookid", function () {
+router.route("/bookUpdate").get(function () {
     var bookM = global.dbHandel.getModel("book");
-    bookM.findById(req.params.bookid, function (err, bookdoc) {
+    bookM.findById(req.query.bookid, function (err, bookdoc) {
         res.render("share", {title: "share", datas: bookdoc});
     })
-}).post("/book/update/:bookid", function (req, res) {
+}).post(function (req, res) {
     var userId = sessionUserId(req, res);
     var book = {
         title: req.body.title,
@@ -332,32 +241,37 @@ router.get("/book/update/:bookid", function () {
         categoryId: req.body.categoryId
     };
     var bookM = global.dbHandel.getModel("book");
-    bookM.updateOne({_id: req.params.bookid}, book, function (err, bookdoc) {
+    bookM.updateOne({_id: req.query.bookid}, book, function (err, bookdoc) {
         if (err) {
             res.send(500);
             req.session.error = '网络异常错误！';
             console.log(err);
         } else {
             printStr("书籍信息修改成功")
-            res.redirect("/book/detail/" + req.params.bookid);
+            res.redirect("/book/detail/" + req.query.bookid);
         }
     })
 });
 
 
 //书详情
-router.get("/book/detail/:bookid", function (req, res) {
+router.route("/bookDetail").get(function (req, res) {
     var bookM = global.dbHandel.getModel("book");
-    bookM.findById(req.params.bookid).populate("feels").populate("hungers").exec(function (err, doc) {
-        print(doc)
-        res.render("detail", {title: 'detail', data: doc});
+    bookM.findById(req.query.bookid).populate("feels").populate("hungers").exec(function (err, bookdoc) {
+        var user = global.dbHandel.getModel("user");
+        user.findById(bookdoc.owner,function(err,userdoc){
+            bookdoc.owner = userdoc.name;
+            print(bookdoc)
+            res.render("detail", {title: 'detail', datas: bookdoc});
+        })
+
     });
 });
 //参与排队看书
-router.get("/book/hunger/:bookid", function (req, res) {
+router.get("/bookHunger", function (req, res) {
     var userId = sessionUserId(req, res);
     var bookM = global.dbHandel.getModel("book");
-    bookM.findById(req.params.bookid, function (err, bookdoc) {
+    bookM.findById(req.query.bookid, function (err, bookdoc) {
         bookdoc.hungers.push(userId);
         bookdoc.save(function (err) {
             if (err)
@@ -368,12 +282,12 @@ router.get("/book/hunger/:bookid", function (req, res) {
             userdoc.hungers.push(bookdoc._id);
             userdoc.save();
         });
-        res.send("[" + sessionUserId(req, res) + "]wanna to book the book , sucessfully");
+        res.redirect("/bookDetail?bookid="+bookdoc._id);
     });
 });
 
 //书籍状态改变
-router.get("/book/status", function (req, res) {
+router.get("/bookStatus", function (req, res) {
     var userId = sessionUserId(req, res);
     var bookM = global.dbHandel.getModel("book");
     var status = req.query.status;
@@ -382,17 +296,20 @@ router.get("/book/status", function (req, res) {
         var nextHolder = req.query.holder;  // 传的是结束人的id
     bookM.findOne({owner: userId, _id: req.query.bookid}, function (err, bookdoc) {
         bookdoc.status = status;
-        switch (status) {//状态0未借出1已借出2已归还3下架
+        switch (status) {//状态0未借出1已借出2下架
             case 0:
                 break;
             case 1:
+                if(bookdoc.holder){
+                    bookdoc.readed.push(bookdoc.holder);
+                    bookdoc.hungers.pull(bookdoc.holder);
+                }
                 bookdoc.holder = nextHolder;
                 break;
             case 2:
                 bookdoc.holder = null;
                 break;
-            case 3:
-                break;
+
         }
         bookdoc.save();
         printStr("change book status  ok////")
@@ -405,7 +322,7 @@ router.get("/book/status", function (req, res) {
  * 读后感相关
  */
 //添加评论
-router.post("/feel/add", function (req, res) {
+router.post("/feelAdd", function (req, res) {
     var userId = sessionUserId(req, res);
     var feelM = global.dbHandel.getModel("feel");
     //var bookid = req.query.bookid;
@@ -428,9 +345,9 @@ router.post("/feel/add", function (req, res) {
     )
 })
 //赞同
-router.get("/feel/agree/:feelid", function (req, res) {
+router.get("/feelAgree", function (req, res) {
     var userId = sessionUserId(req, res);
-    var feelid = req.params.feelid;
+    var feelid = req.query.feelid;
     var feelM = global.dbHandel.getModel("feel");
     feelM.findById(feelid, function (err, feel) {
         if (userId == feel.userId) {
