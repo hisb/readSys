@@ -7,9 +7,17 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title><%= title %></title>
     <link rel="stylesheet" href="stylesheets/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="stylesheets/input.css" media="screen">
     <style type="text/css">
-    .m15{ margin: 15px;}
-     .tc{ text-align: center;font-size: 18px;font-weight: 600;}
+        body { background-color: #f9f7f6; }
+        a, a:hover { color:#f3ac2b; cursor: pointer;}
+        .content { margin-top: 100px; }
+        .m15{ margin: 15px;}
+        .tc{ text-align: center;font-size: 18px;font-weight: 600;}
+        .margin { margin: 10px 0; }
+        .loginBtn { display: block; text-align: center; border: 2px solid #f3ac2b; border-radius: 10px; line-height: 30px; background-color: #fff;}
+        .loginBtn a { display: block; }
+        .registerBtn a { margin-top: 10px; }
     </style>
 </head>
 <body screen_capture_injected="true">
@@ -17,50 +25,49 @@
     <%- message %>
         <form class="col-sm-offset-4 col-sm-4 form-horizontal" role="form" method="post" onsubmit="return false">
             <fieldset>
-                <legend></legend>
-                <div class="panel panel-default">
-                <div class="panel-heading">
-                    <p class="tc">注册信息</p>
-                </div>
-                <div class="panel-body m15">
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-user"></span>
+                <fieldset>
+                <div class="content">
+                    <div>
+                        <p class="tc">注 册</p>
+                    </div>
+                    <div class="panel-body m15">
+                        <span class="input input--hideo margin">
+                            <input class="input__field input__field--hideo" type="text" id="username" placeholder = '用户名' />
+                            <label class="input__label input__label--hideo" for="username" style = 'text-align: center;'>
+                                <i class="glyphicon glyphicon-user icon icon--hideo" style = "font-size: 150%"></i>
+                                <span class="input__label-content input__label-content--hideo">Username</span>
+                            </label>
                         </span>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名" required>
+                        <span class="input input--hideo margin">
+                            <input class="input__field input__field--hideo" type="password" id="password" placeholder = '密码' />
+                            <label class="input__label input__label--hideo" for="password" style = 'text-align: center;'>
+                                <i class="glyphicon glyphicon-lock icon icon--hideo" style = "font-size: 150%"></i>
+                                <span class="input__label-content input__label-content--hideo">Password</span>
+                            </label>
+                        </span>
+                        <span class="input input--hideo margin">
+                            <input class="input__field input__field--hideo" type="password" id="password1" placeholder = '重复密码' />
+                            <label class="input__label input__label--hideo" for="password1" style = 'text-align: center;'>
+                                <i class="glyphicon glyphicon-lock icon icon--hideo" style = "font-size: 150%"></i>
+                                <span class="input__label-content input__label-content--hideo">Password</span>
+                            </label>
+                        </span>
+                        <span class="loginBtn margin">
+                            <a class="" id="register1">注 册</a>
+                        </span>
+                        <span class="registerBtn margin">
+                            <a class=" col-sm-3 col-sm-offset-10" id="login1">登录</a>
+                        </span>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-lock"></span>
-                        </span>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-lock"></span>
-                        </span>
-                        <input type="password" class="form-control" id="password1" name="password1" placeholder="请再次输入密码" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block" id="register1">注册</button>
-                </div>
-                <div class="form-group">
-                        <button type="button" class="btn btn-info col-sm-2 col-sm-offset-10" id="login1">登录</button>
-                </div>
-                </div>
-                </div>
+            </fieldset>
             </fieldset>
         </form>
     </div>
 
     <script type="text/javascript" src="javascripts/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="javascripts/input.js"></script>
     <script type="text/javascript">
     $(function(){ 
         $("#login1").click(function(){ 
@@ -84,7 +91,7 @@
                         location.href = 'login';
                     }
                 },
-                error: function(data,err){ 
+                error: function(data,err){ console.log(data, err);return;
                         location.href = 'register';
                 }
             }); 

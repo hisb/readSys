@@ -33,7 +33,7 @@ app.use(function(req,res,next){
     delete req.session.error;
     res.locals.message = "";   // 展示的信息 message
     if(err){ 
-        res.locals.message = '<div class="alert alert-danger" style="margin-bottom:20px;color:red;">'+err+'</div>';
+        res.locals.message = '<div class="alert alert-danger" style="margin-bottom:20px;color:red;text-align: center; display: none; border: none; border-top: 2px solid #f3ac2b; background-color: #fff; color: #ea6f5a; font-weight: bold; font-size: 20px">'+err+'</div>';
     }
     next();  //中间件传递
 });

@@ -1,0 +1,90 @@
+.content-detail .detail-head {
+	text-align: left;
+	border-right: 2px solid #666; 
+}
+.content-detail .detail-head img {
+	display: inline-block;
+}
+.content-detail .detail-card {
+	display: inline-block; 
+	padding-left: 30px;
+	text-align: left;
+}
+.content-detail .detail-card dt {
+	padding:10px 0 20px 0;
+	font-size: 20px;
+}
+.content-detail .detail-card span {
+	margin: 10px 0;
+	display: block;
+}
+.content-detail .detail-card .orderBtn {
+	margin-top: 30px;
+}
+.content-detail .summary {
+	text-align: left;
+	padding-top: 50px;
+}
+.content-article figure {
+	border: 1px solid #ddd;
+	padding: 0 30px;
+}
+.content-article figure legend {
+	border: none;
+	 margin-top: -20px; 
+	 -webkit-font-smoothing: antialiased; 
+	 color: gray;
+}
+.content-article figure legend span {
+	background-color: #fff;
+}
+.content-article figure .commentList {
+	list-style: none;
+	padding: 0;
+	padding-bottom: 30px;
+	border-bottom: 1px solid #ddd;
+}
+.content-article figure .commentList li {
+	overflow: hidden;
+	margin: 30px 0;
+}
+.content-article figure .personImg {
+	width: 50px; 
+	height: 50px; 
+	border-radius: 100%; 
+	float: left; 
+	margin-right: 20px;
+}
+.content-article figure .text {
+	font-size: 14px; 
+	float: left;
+	color: #666;
+}
+.content-article figure .commentSend {
+	border: none;
+	border: 2px solid #ddd;
+	border-radius: 20px;
+	width: 500px;
+	height: 40px;
+	padding-left: 10px;
+	color: #666;
+}
+.content-article figure .divCont {
+	display: inline-block;
+	margin: 30px 0;
+	color: #ddd;
+	position: relative;
+}
+.content-article figure .divCont label {
+	position: absolute;
+	right: 20px;
+	top: 0;
+	line-height: 40px;
+}
+.content-article figure .commentSend:focus {
+	border-color: #f3ac2b;
+	outline:0 !important;
+}
+.content-article figure .commentSend:focus + label {
+	color: #f3ac2b;
+}

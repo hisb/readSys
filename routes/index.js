@@ -16,12 +16,12 @@ var homeData = [
 				imgSrc: 'images/literature/wenxue22.jpg',
 				title : '我们仨',
 				number: 9
-			},{
+			}/*,{
 				author: '路遥',
 				imgSrc: 'images/literature/wenxue33.jpg',
 				title : '平凡的世界',
 				number: 9
-			}
+			}*/
 		]
 	},{
 		type: '小说',

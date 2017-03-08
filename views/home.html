@@ -44,7 +44,8 @@
 			<h3 class="heading">About Me</h3>
 			<h2><%= user.name %></h2>
 			<p>用一句话介绍你自己.</p>
-			<a href = '/share'>我要分享</a></br>
+			<a href = '/share'>我的分享</a></br>
+			<a href = '/share'>我的订阅</a></br>
 			<a href = '/logout'>退出</a>
 		</div>
 
@@ -90,28 +91,30 @@
 	<div class="container-fluid">
 		<div class="row fh5co-post-entry">
 		<% datas.forEach(function(item) { %>
-			<article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
-				<div class = 'classify'>
-					<figure>
-						<a href="/more/<%= item.id %>" style = "display: block;font-size: 20px;"><%= item.type %></a>
-					</figure>
-				</div>
-			</article>
-			<% for(var i = 0; i < item.data.length; i++) { %>
+			<section class = 'col-lg-12 col-md-12 col-sm-12'>
 				<article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
-					<div class = 'divContainer'>
+					<div class = 'classify'>
 						<figure>
-							<a href="/detail"><img src=" <%= item.data[i].imgSrc %>" alt="Image" class="img-responsive"></a>
+							<a href="/more/<%= item.id %>" style = "display: block;font-size: 20px;"><%= item.type %></a>
 						</figure>
-						<div class = 'infor'>
-							<span class="fh5co-meta"><%= item.data[i].author %> 著</span>
-							<h3 class="fh5co-article-title"><a href="/detail"><%= item.data[i].title %></a></h3></br>
-							<span class="fh5co-meta fh5co-date">前方 <%= item.data[i].number %> 人订阅</span>
-							<span class="fh5co-meta"><a href="/detail">参与排队</a></span>
-						</div>
 					</div>
 				</article>
-			<% } %>
+				<% for(var i = 0; i < item.data.length; i++) { %>
+					<article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
+						<div class = 'divContainer'>
+							<figure>
+								<a href="/detail"><img src=" <%= item.data[i].imgSrc %>" alt="Image" class="img-responsive"></a>
+							</figure>
+							<div class = 'infor'>
+								<span class="fh5co-meta"><%= item.data[i].author %> 著</span>
+								<h3 class="fh5co-article-title"><a href="/detail"><%= item.data[i].title %></a></h3></br>
+								<span class="fh5co-meta fh5co-date">前方 <%= item.data[i].number %> 人订阅</span>
+								<span class="fh5co-meta"><a href="/detail">参与排队</a></span>
+							</div>
+						</div>
+					</article>
+				<% } %>
+			</section>
 		<% }) %>
 		</div>
 	</div>

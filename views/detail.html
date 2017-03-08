@@ -21,6 +21,8 @@
 
       <link rel="stylesheet" href="stylesheets/style2.css">
 
+      <link rel="stylesheet" href="stylesheets/detail.css">
+
 
       <!-- Modernizr JS -->
       <script src="javascripts/modernizr-2.6.2.min.js"></script>
@@ -75,7 +77,7 @@
                 <div class="row">
                 <a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
                 <div class="col-lg-12 col-md-12 text-center">
-                  <h1 id="fh5co-logo"><a href="index.html">自在独行</a></h1>
+                  <!-- <h1 id="fh5co-logo"><a href="index.html">自在独行</a></h1> -->
                 </div>
                 </div>
             </div>
@@ -85,16 +87,60 @@
         <!-- END #fh5co-header -->
         <div class="container-fluid">
             <div class="row fh5co-post-entry single-entry">
-                <article class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
-                    <figure class="animate-box">
-                        <img src="images/literature/wenxue11.jpg" alt="Image" class="img-responsive" style = 'margin: 0 auto'>
-                    </figure>
-                    <span class="fh5co-meta animate-box"><a href="single.html">Travel</a></span>
-                    <h2 class="fh5co-article-title animate-box"><a href="single.html">My First Time Traveling in Vietnam</a></h2>
-                    <span class="fh5co-meta fh5co-date animate-box">March 6th, 2016</span>
+                <article class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0 content-detail">
+                    <section class = 'col-lg-12 col-md-12'>
+                        <figure class="col-lg-6 animate-box detail-head">
+                            <img src="images/literature/wenxue11.jpg" alt="Image" class="img-responsive">
+                        </figure>
+                        <figure class = 'col-lg-6'>
+                            <dl class = 'detail-card'>
+                                <dt>自在独行</dt>
+                                <dd>
+                                    <span>贾平凹 著</span>
+                                    <span>由 蔡雅玲 分享</span>
+                                    <span>张三、李四、王五等 9 人正在排队订阅</span>
+                                    <span class="fh5co-meta orderBtn"><a href="/detail">参与排队</a></span>
+                                </dd>
+                            </dl>
+                        </figure>
+                    </section>
+                    
+                    
+                    <span class="col-lg-12 fh5co-meta animate-box summary">《自在独行》内容简介：平凹先生素来喜静，最怕有人来敲他的房门。让他觉得自在的，要么就是行走于西北的大地，要么就是隐居在自己的书房。
+                    先生其实也喜欢热闹，只是先生的热闹并不是灯火灿烂，而是内心的安宁与独行的自在。
+                    这本书写情感、聊爱好、谈社会、说人生。有俗世的智慧，也有生活的趣味。
+                    对于匆匆的路人，平凹先生这部文集只是用来附庸风雅的玩物。但这本书却要写给生命的行者。愿他们能懂得孤独的真义，在生活里多一些从容潇洒。</span>
                     
                     <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
-                        <div class="row">
+                        <figure class="animate-box">
+                            <legend>
+                                <span>我来说一句</span>
+                            </legend>
+                            <ul class = 'commentList'>
+                                <li>
+                                    <img src = 'images/person1.jpg' class = 'personImg'/>
+                                    <span class = 'text'>
+                                        蔡雅玲 </br>这本书值得推荐
+                                    </span>
+                                </li>
+                                <li>
+                                    <img src = 'images/person1.jpg' class = 'personImg'/>
+                                    <span class = 'text'>
+                                        蔡雅玲 </br>这本书值得推荐
+                                    </span>
+                                </li>
+                                <li>
+                                    <img src = 'images/person1.jpg' class = 'personImg'/>
+                                    <span class = 'text'>
+                                        蔡雅玲 </br>这本书值得推荐
+                                    </span>
+                                </li>
+                            </ul>
+                            <div class = divCont>
+                                <input type = 'text' class = 'commentSend' placeholder = '我来说一句' /><label><i class = 'glyphicon glyphicon-send'></i></label>
+                            </div>
+                        </figure>
+                        <!-- <div class="row">
                             <div class="col-lg-8 cp-r animate-box">
                                 <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large <a href="#">language</a> ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
 
@@ -179,7 +225,7 @@
                                 <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large <a href="#">language</a> ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
                                 <p>She packed her seven versalia, put her initial into the belt and made herself on the way. When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way.</p>
                             </div>
-                        </div>
+                        </div> -->
                       
                       
                     </div>
