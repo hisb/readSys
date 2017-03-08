@@ -15,17 +15,26 @@ var app = express();
 
 
 global.dbHandel = require('./database/dbHandel');
-global.db = mongoose.connect("mongodb://localhost:27017/yl");
+global.db = mongoose.connect("mongodb://localhost:27017/yl",function(err){
+    if(err){
+        console.log("init mongo connection fail...")
+        return ;
+    }
+});
+
+
 // 下边这里也加上 use(multer())
 app.use(bodyParser.urlencoded({ extended: true }));
 /*app.use(multer());*/
 app.use(cookieParser());
 
 app.use(session({ 
-    secret: 'secret',
+    secret: 'kvkenssecret',
     cookie:{ 
-        maxAge: 1000*60*30
-    }
+        maxAge: 1000 * 60 * 60 * 24
+    },
+    resave:false,
+    saveUninitialized: true,
 }));
 app.use(function(req,res,next){ 
     res.locals.user = req.session.user;   // 从session 获取 user对象
@@ -53,14 +62,27 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);  // 即为为路径 / 设置路由
-app.use('/users', users); // 即为为路径 /users 设置路由
+app.use('/home',routes); // 即为为路径 /home 设置路由
+
 app.use('/login',routes); // 即为为路径 /login 设置路由
 app.use('/register',routes); // 即为为路径 /register 设置路由
-app.use('/home',routes); // 即为为路径 /home 设置路由
 app.use("/logout",routes); // 即为为路径 /logout 设置路由
-app.use("/detail",routes); // 即为为路径 /logout 设置路由
-app.use("/more/:id",routes); // 即为为路径 /logout 设置路由
-app.use("/share",routes); // 即为为路径 /logout 设置路由
+app.use('/user/update',routes); // 即为为路径 /register 设置路由
+app.use('/user/myshare',routes); // 即为为路径 /register 设置路由
+app.use('/user/myhunger',routes); // 即为为路径 /register 设置路由
+
+app.use('/category/list',routes); // 即为为路径 /register 设置路由
+app.use('/category/more/:categoryid',routes); // 即为为路径 /register 设置路由
+
+app.use('/book/share',routes); // 即为为路径 /register 设置路由
+app.use('/book/detail/:bookid',routes); // 即为为路径 /register 设置路由
+app.use('/book/hunger/:bookid',routes); // 即为为路径 /register 设置路由
+app.use('/book/status',routes); // 即为为路径 /register 设置路由
+
+app.use('/feel/add',routes); // 即为为路径 /register 设置路由
+app.use('/feel/agree/:feelid',routes); // 即为为路径 /register 设置路由
+
+
 // catch 404 and forward to error handler
 /*app.use(function(req, res, next) {
   var err = new Error('Not Found');

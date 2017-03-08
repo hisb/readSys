@@ -42,10 +42,15 @@
 				<img src="images/person1.jpg" alt="Free HTML5 Bootstrap Template" class="img-responsive">
 			</figure>
 			<h3 class="heading">About Me</h3>
-			<h2><%= user.name %></h2>
-			<p>用一句话介绍你自己.</p>
-			<a href = '/share'>我要分享</a></br>
-			<a href = '/logout'>退出</a>
+			<% if(user){ %>
+				<h2><%= user.name %></h2>
+				<p>用一句话介绍你自己.</p>
+				<a href = '/share'>我要分享</a></br>
+				<a href = '/logout'>退出</a>
+			<%}else{%>
+				<a href = '/login'>登录</a>
+				<a href = '/register'>注册</a>
+			<%}%>
 		</div>
 
 		<div class="fh5co-menu">
@@ -77,7 +82,7 @@
 			<div class="row">
 				<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
 				<div class="col-lg-12 col-md-12 text-center">
-					<h1 id="fh5co-logo"><a href="home">我有故事，你有酒</a></h1>
+					<h1 id="fh5co-logo"><a href="home">用书，感受世事浮沉</a></h1>
 				</div>
 
 			</div>
@@ -93,25 +98,27 @@
 			<article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
 				<div class = 'classify'>
 					<figure>
-						<a href="/more/<%= item.id %>" style = "display: block;font-size: 20px;"><%= item.type %></a>
+						<a href="/category/more/<%= item._id %>" style = "display: block;font-size: 20px;"><%= item.name %></a>
 					</figure>
 				</div>
 			</article>
-			<% for(var i = 0; i < item.data.length; i++) { %>
+			<% for(var i = 0; i < item.books.length; i++) {
+				if(i < 3){
+			%>
 				<article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
 					<div class = 'divContainer'>
 						<figure>
-							<a href="/detail"><img src=" <%= item.data[i].imgSrc %>" alt="Image" class="img-responsive"></a>
+							<a href="/book/detail/<%=item.books[i]._id%>"><img src="<%= item.books[i].imgSrc %>" alt="Image" class="img-responsive"></a>
 						</figure>
 						<div class = 'infor'>
-							<span class="fh5co-meta"><%= item.data[i].author %> 著</span>
-							<h3 class="fh5co-article-title"><a href="/detail"><%= item.data[i].title %></a></h3></br>
-							<span class="fh5co-meta fh5co-date">前方 <%= item.data[i].number %> 人订阅</span>
-							<span class="fh5co-meta"><a href="/detail">参与排队</a></span>
+							<span class="fh5co-meta"><%= item.books[i].author %> 著</span>
+							<h3 class="fh5co-article-title"><a href="/book/detail/<%=item.books[i]._id%>"><%= item.books[i].title %></a></h3></br>
+							<span class="fh5co-meta fh5co-date">前方 <%= item.books[i].hungers.length %> 人订阅</span>
+							<span class="fh5co-meta"><a href="/book/hunger/<%=item.books[i]._id%>">参与排队</a></span>
 						</div>
 					</div>
 				</article>
-			<% } %>
+			<% }} %>
 		<% }) %>
 		</div>
 	</div>
