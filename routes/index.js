@@ -286,7 +286,6 @@ router.route("/bookDetail").get(function (req, res) {
         var user = global.dbHandel.getModel("user");
         user.findById(bookdoc.owner, function (err, userdoc) {
             bookdoc.owner = userdoc.name;
-            print(bookdoc)
             res.render("detail", {title: 'detail', datas: bookdoc});
         })
 
@@ -297,6 +296,12 @@ router.get("/bookHunger", function (req, res) {
     var userId = sessionUserId(req, res);
     var bookM = global.dbHandel.getModel("book");
     bookM.findById(req.query.bookid, function (err, bookdoc) {
+        print(bookdoc);
+        printStr(userId)
+        if (bookdoc.hungers.indexOf(userId) != -1 || userId == bookdoc.owner) {
+            res.redirect("/bookDetail?bookid=" + bookdoc._id);
+            return;
+        }
         bookdoc.hungers.push(userId);
         bookdoc.save(function (err) {
             if (err)
@@ -316,25 +321,25 @@ router.get("/bookStatus", function (req, res) {
     var userId = sessionUserId(req, res);
     var bookM = global.dbHandel.getModel("book");
     var status = req.query.status;
-    printStr(status + "__" + req.query.bookid);
-    if (!status)
-        var nextHolder = req.query.holder;  // 传的是结束人的id
+    var nextHolder = req.query.holder;  // 传的是待借书人的id
+    printStr(req.query.bookid + "_" + userId + "_" + status)
     bookM.findOne({owner: userId, _id: req.query.bookid}, function (err, bookdoc) {
+        if (err) {
+            res.send(404);
+        }
         bookdoc.status = status;
-        switch (status) {//状态0未借出1已借出2下架
-            case 0:
-                break;
-            case 1:
-                if (bookdoc.holder) {
-                    bookdoc.readed.push(bookdoc.holder);
-                    bookdoc.hungers.pull(bookdoc.holder);
-                }
-                bookdoc.holder = nextHolder;
-                break;
-            case 2:
-                bookdoc.holder = null;
-                break;
-
+        if (status == 0) {
+            bookdoc.holder = null;
+        }
+        if (status == 1) {//状态0未借出,或者重新上架1已借出2下架
+            bookdoc.hungers.pull(nextHolder);
+            if(bookdoc.readed.indexOf(nextHolder) == -1){
+                bookdoc.readed.push(nextHolder);
+            }
+            bookdoc.holder = nextHolder;
+        }
+        if (status == 2) {
+            bookdoc.holder = null;
         }
         bookdoc.save();
         printStr("change book status  ok////")
