@@ -28,20 +28,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 /*app.use(multer());*/
 app.use(cookieParser());
 
-app.use(session({ 
+app.use(session({
     secret: 'kvkenssecret',
-    cookie:{ 
+    cookie:{
         maxAge: 1000 * 60 * 60 * 24
     },
     resave:false,
     saveUninitialized: true,
 }));
-app.use(function(req,res,next){ 
+app.use(function(req,res,next){
     res.locals.user = req.session.user;   // 从session 获取 user对象
     var err = req.session.error;   //获取错误信息
     delete req.session.error;
     res.locals.message = "";   // 展示的信息 message
-    if(err){ 
+    if(err){
         res.locals.message = '<div class="alert alert-danger" style="margin-bottom:20px;color:red;">'+err+'</div>';
     }
     next();  //中间件传递

@@ -102,11 +102,10 @@
                                     <span><%=datas.author%> 著</span>
                                     <span>由 <%=datas.owner%> 分享</span>
                                     <span>
-                                        <%
-                                        var exist = false;
+                                        <%  var exist = false;
                                         for(var i = 0 ;i < datas.hungers.length;i++){
                                         var hun = datas.hungers[i];
-                                        if(user._id && user._id == hun._id)
+                                        if(user && user._id && user._id == hun._id)
                                             exist = true;
                                         %>
                                             <%=hun.name%>
@@ -132,20 +131,13 @@
                                 <span>我来说一句</span>
                             </legend>
                             <ul class = 'commentList'>
-                                <li>
-                                    <img src = 'images/person1.jpg' class = 'personImg'/>
-                                    <span class = 'text'>
-                                        蔡雅玲 </br>这本书值得推荐
-                                    </span>
-                                </li>
-
-                                <% for(var  j = 0;j < datas.feels.length;j++){
-                                    var feel = data.feels[j];
+                                <% for(var j = 0;j < datas.feels.length;j++){
+                                    var feel = datas.feels[j];
                                 %>
                                 <li>
-                                    <img src = 'images/person1.jpg' class = 'personImg'/>
+                                    <img src = '<%=feel.imgSrc%>' class = 'personImg'/>
                                     <span class = 'text'>
-                                        蔡雅玲 </br><%=feel.content%>
+                                        <%=feel.usernick%> </br><%=feel.content%></br><%=feel.cdate%>
                                     </span>
                                 </li>
                                 <%}%>
