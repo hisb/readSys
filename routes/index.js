@@ -1,9 +1,12 @@
 var express = require('express');
 var router = express.Router();
-
+var fs = require("fs")
+var multer = require('multer');
+var path = require('path');
+var upload = multer({dest: '/images'});
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.redirect("/login");
+    res.redirect("/home");
 });
 
 
@@ -56,6 +59,18 @@ router.get("/logout", function (req, res) {
     sessionClear(req, res);
 })
 
+//头像上传
+router.post("/avatarUpload", upload.single("avatar"), function (req, res) {
+    var des_file = req.file.destination + "/" + req.file.filename + path.extname(req.file.originalname);
+    fs.readFile(req.file.path, function (err, data) {
+        fs.writeFile("public" + des_file, data, function (err) {
+            if (err)
+                printStr("upload avatar errr")
+            else
+                res.send(des_file);
+        });
+    });
+})
 
 /* GET register page. */
 router.route("/register").get(function (req, res) {    // 到达此路径则渲染register文件，并传出title值供 register.html使用
@@ -78,6 +93,7 @@ router.route("/register").get(function (req, res) {    // 到达此路径则渲�
                 password: req.body.upwd,
                 nick: req.body.nick,
                 email: req.body.email,
+                imgSrc: req.body.imgSrc,
                 phone: req.body.phone,
                 adress: req.body.adress,
                 selfdesc: req.body.selfdesc,
@@ -115,6 +131,7 @@ router.route("/user/update").get(function (req, res) {
                 nick: req.body.nick,
                 email: req.body.email,
                 phone: req.body.phone,
+                imgSrc: req.body.imgSrc,
                 adress: req.body.adress,
                 selfdesc: req.body.selfdesc,
                 udate: Date.now()
@@ -217,6 +234,19 @@ router.get("/book/share", function () {
     })
 });
 
+//封面上传
+router.post("/coverUpload", upload.single("cover"), function (req, res) {
+    var des_file = req.file.destination + "/" + req.file.filename + path.extname(req.file.originalname);
+    fs.readFile(req.file.path, function (err, data) {
+        fs.writeFile("public" + des_file, data, function (err) {
+            if (err)
+                printStr("upload avatar errr")
+            else
+                res.send(des_file);
+        });
+    });
+})
+
 //修改
 router.get("/book/update/:bookid", function () {
     var bookM = global.dbHandel.getModel("book");
@@ -253,9 +283,13 @@ router.get("/book/update/:bookid", function () {
 //书详情
 router.get("/book/detail/:bookid", function (req, res) {
     var bookM = global.dbHandel.getModel("book");
-    bookM.findById(req.params.bookid).populate("feels").populate("hungers").exec(function (err, doc) {
-        print(doc)
-        res.render("detail", {title: 'detail', data: doc});
+    bookM.findById(req.query.bookid).populate("feels").populate("hungers").exec(function (err, bookdoc) {
+        var user = global.dbHandel.getModel("user");
+        user.findById(bookdoc.owner, function (err, userdoc) {
+            bookdoc.owner = userdoc.name;
+            print(bookdoc)
+            res.render("detail", {title: 'detail', datas: bookdoc});
+        })
     });
 });
 //参与排队看书
@@ -273,7 +307,7 @@ router.get("/book/hunger/:bookid", function (req, res) {
             userdoc.hungers.push(bookdoc._id);
             userdoc.save();
         });
-        res.send("[" + sessionUserId(req, res) + "]wanna to book the book , sucessfully");
+        res.redirect("/bookDetail?bookid=" + bookdoc._id);
     });
 });
 
@@ -291,6 +325,10 @@ router.get("/book/status", function (req, res) {
             case 0:
                 break;
             case 1:
+                if (bookdoc.holder) {
+                    bookdoc.readed.push(bookdoc.holder);
+                    bookdoc.hungers.pull(bookdoc.holder);
+                }
                 bookdoc.holder = nextHolder;
                 break;
             case 2:
@@ -313,7 +351,7 @@ router.get("/book/status", function (req, res) {
 router.post("/feel/add", function (req, res) {
     var userId = sessionUserId(req, res);
     var userM = global.dbHandel.getModel("user");
-    userM.findById(userId,function(err,userdoc){
+    userM.findById(userId, function (err, userdoc) {
         var feelM = global.dbHandel.getModel("feel");
         //var bookid = req.query.bookid;
         feelM.create(
@@ -321,8 +359,8 @@ router.post("/feel/add", function (req, res) {
                 content: req.body.content,
                 bookid: req.body.bookid,
                 userId: userdoc._id,
-                usernick:userdoc.nick,
-                imgSrc:userdoc.imgSrc,
+                usernick: userdoc.nick,
+                imgSrc: userdoc.imgSrc,
                 agree: 0,
                 cdate: Date.now(),
                 udate: Date.now()
