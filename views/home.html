@@ -38,27 +38,24 @@
 	<div id="fh5co-offcanvas">
 		<a href="#" class="fh5co-close-offcanvas js-fh5co-close-offcanvas"><span><i class="icon-cross3"></i> <span>关闭</span></span></a>
 		<div class="fh5co-bio">
+			<% if(user){ %>
 			<figure>
-				<img src="images/person1.jpg" alt="Free HTML5 Bootstrap Template" class="img-responsive">
+					<img src="<%=user.imgSrc%>" alt="Free HTML5 Bootstrap Template" class="img-responsive">
 			</figure>
 			<h3 class="heading">About Me</h3>
-<<<<<<< 6f9cfc25f0b40960562806e82f28484d93d94223
-			<h2><%= user.name %></h2>
-			<p>用一句话介绍你自己.</p>
-			<a href = '/share'>我的分享</a></br>
-			<a href = '/share'>我的订阅</a></br>
-			<a href = '/logout'>退出</a>
-=======
 			<% if(user){ %>
 				<h2><%= user.name %></h2>
 				<p>用一句话介绍你自己.</p>
 				<a href = '/share'>我要分享</a></br>
+				<h2><%= user.nick %></h2>
+				<p><%= user.desc %>.</p>
+				<a href = '/share'>我的分享</a></br>
+			    <a href = '/share'>我的借书</a></br>
 				<a href = '/logout'>退出</a>
 			<%}else{%>
 				<a href = '/login'>登录</a>
 				<a href = '/register'>注册</a>
 			<%}%>
->>>>>>> 添加服务
 		</div>
 
 		<div class="fh5co-menu">
@@ -117,7 +114,7 @@
 				<article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
 					<div class = 'classify'>
 						<figure>
-							<a href="/more/<%= item.id %>" style = "display: block;font-size: 20px;"><%= item.type %></a>
+							<a href=/categoryMore?categoryid=<%= item._id %> style = "display: block;font-size: 20px;"><%= item.name %></a>
 						</figure>
 					</div>
 				</article>

@@ -1,98 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-
-//var homeData = [
-//    {
-//        type: '文学',
-//        id: 1,
-//        data: [
-//            {
-//                author: '贾平凹',
-//                imgSrc: 'images/literature/wenxue11.jpg',
-//                title: '自在独行',
-//                number: 9
-//            }, {
-//                author: '杨绛',
-//                imgSrc: 'images/literature/wenxue22.jpg',
-//                title: '我们仨',
-//                number: 9
-//            }, {
-//                author: '路遥',
-//                imgSrc: 'images/literature/wenxue33.jpg',
-//                title: '平凡的世界',
-//                number: 9
-//            }
-//        ]
-//    }, {
-//        type: '小说',
-//        id: 2,
-//        data: [
-//            {
-//                author: '加·泽文',
-//                imgSrc: 'images/novel/xiaoshuo11.jpg',
-//                title: '岛上书店',
-//                number: 9
-//            }, {
-//                author: '东野圭吾',
-//                imgSrc: 'images/novel/xiaoshuo22.jpg',
-//                title: '解忧杂货店',
-//                number: 9
-//            }, {
-//                author: '圣埃克苏佩里',
-//                imgSrc: 'images/novel/xiaoshuo33.jpg',
-//                title: '小王子',
-//                number: 9
-//            }
-//        ]
-//    }
-//];
-
-//var moreData = [
-//
-//    {
-//        author: '贾平凹',
-//        imgSrc: 'images/literature/wenxue11.jpg',
-//        title: '自在独行',
-//        number: 9
-//    }, {
-//        author: '杨绛',
-//        imgSrc: 'images/literature/wenxue22.jpg',
-//        title: '我们仨',
-//        number: 9
-//    }, {
-//        author: '路遥',
-//        imgSrc: 'images/literature/wenxue33.jpg',
-//        title: '平凡的世界',
-//        number: 9
-//    }, {
-//        author: '加·泽文',
-//        imgSrc: 'images/literature/wenxue44.jpg',
-//        title: '活着',
-//        number: 9
-//    }, {
-//        author: '东野圭吾',
-//        imgSrc: 'images/literature/wenxue55.jpg',
-//        title: '愿人生从容',
-//        number: 9
-//    }, {
-//        author: '圣埃克苏佩里',
-//        imgSrc: 'images/literature/wenxue66.jpg',
-//        title: '文学回憶録',
-//        number: 9
-//    }, {
-//        author: '圣埃克苏佩里',
-//        imgSrc: 'images/literature/wenxue77.jpg',
-//        title: '直到那一天',
-//        number: 9
-//    }, {
-//        author: '圣埃克苏佩里',
-//        imgSrc: 'images/literature/wenxue88.jpg',
-//        title: '小王子',
-//        number: 9
-//    }
-//];
-
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.redirect("/login");
@@ -109,7 +17,6 @@ router.get("/home", function (req, res) {
         res.render("home", {title: 'Home', datas: categorys});
     });
 });
-
 
 /**
  * 用户相关
@@ -149,10 +56,6 @@ router.get("/logout", function (req, res) {
     sessionClear(req, res);
 })
 
-function sessionClear(req, res) {
-    req.session.user = null;
-    res.redirect("/home");
-}
 
 /* GET register page. */
 router.route("/register").get(function (req, res) {    // 到达此路径则渲染register文件，并传出title值供 register.html使用
@@ -409,25 +312,32 @@ router.get("/book/status", function (req, res) {
 //添加评论
 router.post("/feel/add", function (req, res) {
     var userId = sessionUserId(req, res);
-    var feelM = global.dbHandel.getModel("feel");
-    //var bookid = req.query.bookid;
-    feelM.create(
-        {
-            content: req.body.content,
-            bookid: req.body.bookid,
-            userId: userId,
-            agree: 0,
-            cdate: Date.now(),
-            udate: Date.now()
-        }, function (err, feeldoc) {
-            var bookM = global.dbHandel.getModel("book");
-            bookM.findById(req.body.bookid, function (err, bookdoc) {
-                bookdoc.feels.push(feeldoc._id);
-                bookdoc.save();
-            })
-            res.redirect("/book/detail/" + req.body.bookid);
-        }
-    )
+    var userM = global.dbHandel.getModel("user");
+    userM.findById(userId,function(err,userdoc){
+        var feelM = global.dbHandel.getModel("feel");
+        //var bookid = req.query.bookid;
+        feelM.create(
+            {
+                content: req.body.content,
+                bookid: req.body.bookid,
+                userId: userdoc._id,
+                usernick:userdoc.nick,
+                imgSrc:userdoc.imgSrc,
+                agree: 0,
+                cdate: Date.now(),
+                udate: Date.now()
+            }, function (err, feeldoc) {
+                var bookM = global.dbHandel.getModel("book");
+                bookM.findById(req.body.bookid, function (err, bookdoc) {
+                    bookdoc.feels.push(feeldoc._id);
+                    bookdoc.save();
+                })
+                res.redirect("/bookDetail?bookid=" + req.body.bookid);
+            }
+        )
+    })
+
+
 })
 //赞同
 router.get("/feel/agree/:feelid", function (req, res) {
@@ -464,5 +374,9 @@ function sessionUserId(req, res) {
     return req.session.user._id;
 }
 
+function sessionClear(req, res) {
+    req.session.user = null;
+    res.redirect("/home");
+}
 
 module.exports = router;

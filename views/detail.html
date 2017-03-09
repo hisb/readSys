@@ -96,10 +96,23 @@
                             <dl class = 'detail-card'>
                                 <dt>自在独行</dt>
                                 <dd>
-                                    <span>贾平凹 著</span>
-                                    <span>由 蔡雅玲 分享</span>
-                                    <span>张三、李四、王五等 9 人正在排队订阅</span>
-                                    <span class="fh5co-meta orderBtn"><a href="/detail">参与排队</a></span>
+                                    <span><%=datas.author%> 著</span>
+                                    <span>由 <%=datas.owner%> 分享</span>
+                                    <span>
+                                        <%  var exist = false;
+                                        for(var i = 0 ;i < datas.hungers.length;i++){
+                                        var hun = datas.hungers[i];
+                                        if(user && user._id && user._id == hun._id)
+                                            exist = true;
+                                        %>
+                                            <%=hun.name%>
+                                        <%}%>
+                                        等 <%=datas.hungers.length%> 人正在排队订阅</span>
+                                    <% if(!exist){%>
+                                        <span class="fh5co-meta orderBtn"><a href="/bookHunger?bookid=<%=datas._id%>">参与排队</a></span>
+                                    <%}else{%>
+                                        <span class="fh5co-meta orderBtn">排队中</span>
+                                    <%}%>
                                 </dd>
                             </dl>
                         </figure>
@@ -117,22 +130,13 @@
                                 <span>我来说一句</span>
                             </legend>
                             <ul class = 'commentList'>
+                                <% for(var j = 0;j < datas.feels.length;j++){
+                                    var feel = datas.feels[j];
+                                %>
                                 <li>
-                                    <img src = 'images/person1.jpg' class = 'personImg'/>
+                                    <img src = '<%=feel.imgSrc%>' class = 'personImg'/>
                                     <span class = 'text'>
-                                        蔡雅玲 </br>这本书值得推荐
-                                    </span>
-                                </li>
-                                <li>
-                                    <img src = 'images/person1.jpg' class = 'personImg'/>
-                                    <span class = 'text'>
-                                        蔡雅玲 </br>这本书值得推荐
-                                    </span>
-                                </li>
-                                <li>
-                                    <img src = 'images/person1.jpg' class = 'personImg'/>
-                                    <span class = 'text'>
-                                        蔡雅玲 </br>这本书值得推荐
+                                        <%=feel.usernick%> </br><%=feel.content%></br><%=feel.cdate%>
                                     </span>
                                 </li>
                             </ul>
