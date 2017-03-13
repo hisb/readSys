@@ -60,11 +60,18 @@
 		<div class="row fh5co-post-entry" style = 'width:40%; margin: 0 auto'>
 			<div class = '' style = 'font-size:20px'>
 				<span class="input input--hoshi" style = 'text-align: center; position: relative'>
-					<input type = 'file' style= 'display: inline-block; width: 50%; margin: 0 auto; border: none; opacity: 0' />
+					<input type = 'file' value = '' style= 'display: inline-block; width: 50%; margin: 0 auto; border: none; opacity: 0' id = 'filePerson' />
 					<a style = 'position: absolute; top: 0; left: 50%; width: 50%; margin-left: -25%; z-index: -1'><i class = 'glyphicon glyphicon-upload'></i>上传图像</a></br>
+					<img id = 'personPhoto' src = '' />
 					<!-- <div style = 'width: 200px; height: 200px; border: 1px solid #000; line-height: 200px; font-size: 150%; display: inline-block; '>
 					</div> -->
 					
+				</span>
+				<span class="input input--hoshi">
+					<input class="input__field input__field--hoshi" type="password" id="password" />
+					<label class="input__label input__label--hoshi input__label--hoshi-color-1" for="password">
+						<span class="input__label-content input__label-content--hoshi">密码</span>
+					</label>
 				</span>
 				<span class="input input--hoshi">
 					<input class="input__field input__field--hoshi" type="text" id="nick" />
@@ -97,7 +104,7 @@
 					</label>
 				</span>
 				<span style = 'display: block; margin: 40px 0 30px'>
-					<a style = 'display: inline-block; line-height: 40px; width: 100%; text-align: center; border: 2px solid #ddd; border-radius: 20px'>保存</a>
+					<a style = 'display: inline-block; line-height: 40px; width: 100%; text-align: center; border: 2px solid #ddd; border-radius: 20px' id = 'savePerson'>保存</a>
 				</span>
 			</div>
 		</div>
@@ -131,7 +138,8 @@
 				url: '/userUpdate',
 				type: 'get'
 			}).done((data) => {
-				console.log(data);
+				$('#password').val(data.password);
+				$('#password').parent('span').addClass('input--filled');
 				$('#nick').val(data.nick);
 				$('#nick').parent('span').addClass('input--filled');
 				$('#email').val(data.email);
@@ -146,6 +154,25 @@
 					$('#desc').parent('span').addClass('input--filled');
 				}
 			});
+
+			$('#savePerson').on('click', function() {
+				var data = {};
+				data.upwd = $('#password').val();
+				data.nick = $('#nick').val();
+				data.phone = $('#phone').val();
+				data.email = $('#email').val();
+				data.address = $('#address').val();
+				data.selfdesc = $('#desc').val();
+				$.ajax({
+					url: '/userUpdate',
+					type: 'post',
+					data: data
+				}).done((msg) => {
+					if(msg = 'OK') {
+						alert('个人信息修改成功');
+					}
+				});
+			})
 		})
 	</script>
 
