@@ -13,12 +13,13 @@ router.get('/', function (req, res, next) {
 /**
  * 首页
  */
-router.get("/home", function (req, res) {
-    var categoryM = global.dbHandel.getModel("category");
+router.get('/home', function (req, res) {
+	var categoryM = global.dbHandel.getModel("category");	
     categoryM.find().populate("books").exec(function (err, categorys) {
         console.log(JSON.stringify(categorys));
         res.render("home", {title: 'Home', datas: categorys});
     });
+    
 });
 
 /**
@@ -111,11 +112,18 @@ router.route("/register").get(function (req, res) {    // 到达此路径则渲�
         }
     });
 });
+router.get('/editPerson', function(req, res) {
+    res.render('editPerson', {title: '编辑资料'});
+});
+
+ 
 //修改用户信息
 router.route("/user/update").get(function (req, res) {
     var userId = sessionUserId(req, res);
+    var User = global.dbHandel.getModel('user');
     User.findById(userId, function (err, doc) {  //先把用户原有的信息填写到旧的表格
-        res.render("update", {title: 'User update', data: doc});
+        res.send(doc);
+        // res.render("editPerson", {title: 'User update', data: doc});
     })
 }).post(function (req, res) {
     var User = global.dbHandel.getModel('user');
@@ -194,7 +202,7 @@ router.get("/category/more/:categoryid", function (req, res) {
  * 书籍相关
  */
 //分享书籍(添加)
-router.get("/book/share", function () {
+router.route("/bookShare").get(function (req, res) {
     res.render("share", {title: "share"});
 }).post("/book/share", function (req, res) {
     var userId = sessionUserId(req, res);

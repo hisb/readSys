@@ -8,13 +8,14 @@ var mongoose = require('mongoose');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var pageRoutes = require('./routes/pageRoute');
 
 var session = require('express-session');
 var app = express();
 
 
 global.dbHandel = require('./database/dbHandel');
-global.db = mongoose.connect("mongodb://localhost:27017/yl",function(err){
+global.db = mongoose.connect("mongodb://172.16.39.31:27017/yl",function(err){
     if(err){
         console.log("init mongo connection fail...")
         return ;
@@ -80,6 +81,7 @@ app.use('/book/status',routes); // 即为为路径 /register 设置路由
 app.use('/feel/add',routes); // 即为为路径 /register 设置路由
 app.use('/feel/agree/:feelid',routes); // 即为为路径 /register 设置路由
 
+app.use('/editPerson',routes);
 
 // catch 404 and forward to error handler
 /*app.use(function(req, res, next) {

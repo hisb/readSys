@@ -23,8 +23,12 @@
         .info { border: 1px solid #ddd; padding: 20px; margin-top: 10px; position: relative;}
         .info .title { position: absolute; right: 10px; top: -15px; background-color: #f9f7f6; color: #666; font-size: 18px;}
         .info span { display: block; }
-        .info input { border: none; border-bottom: 2px solid #ddd; background-color: #f9f7f6; width: 100%; line-height: 40px; padding-left: 10px;}
+        .info span i { color: #f3ac2b; margin-right: 10px;}
+        .info input { border: none; border-bottom: 2px solid #ddd; background-color: #f9f7f6; width: calc(100% - 20px);  line-height: 40px; padding-left: 10px;}
+        .info input#desc { margin-left: 20px; }
         .info input:focus { outline: none; border-color: #f3ac2b; background-color: #fff;}
+        .error { color: #ea6f5a; background-color:#fff; display: none; padding: 5px 10px; margin-left: 20px;}
+        .error2 { margin: -10px 0 0 0; border-top: 2px solid #ea6f5a; color: #ea6f5a; }
     </style>
 </head>
 <body screen_capture_injected="true">
@@ -45,6 +49,7 @@
                                 <span class="input__label-content input__label-content--hideo">Username</span>
                             </label>
                         </span>
+                        <p class = 'error error2'>用户名不合规范</p>
                         <span class="input input--hideo margin">
                             <input class="input__field input__field--hideo" type="password" id="password" placeholder = '密码' />
                             <label class="input__label input__label--hideo" for="password" style = 'text-align: center;'>
@@ -70,15 +75,22 @@
                     <div class = 'col-sm-5 info'>
                         <div class = 'title'>个人信息</div>
                         <span class=" margin">
-                            <input class="" type="text" id="nike" placeholder = '昵称' />
+                            <i>*</i>
+                            <input class="" type="text" id="nick" placeholder = '昵称' /></label>
+                            <p class = 'error'>昵称不合规范</p>
                         </span>
                         <span class=" margin">
+                            <i>*</i>
                             <input class="" type="text" id="email" placeholder = 'email' />
+                            <p class = 'error'>邮箱不合规范</p>
                         </span>
                         <span class=" margin">
+                            <i>*</i>
                             <input class="" type="text" id="phone" placeholder = '手机号' />
+                            <p class = 'error'>手机号不合规范</p>
                         </span>
                         <span class=" margin">
+                            <i>*</i>
                             <input class="" type="text" id="address" placeholder = '地址' />
                         </span>
                         <span class=" margin">
@@ -93,20 +105,72 @@
     <script type="text/javascript" src="javascripts/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="javascripts/input.js"></script>
+    <script type="text/javascript" src="javascripts/common.js"></script>
     <script type="text/javascript">
     $(function(){ 
         $("#login1").click(function(){ 
             location.href = 'login';
         });
+        $('#username').on('blur', function() {
+            var value = $(this).val();
+            if(value && ! strExp.name.test(value)) {
+                $(this).parents('span').next('.error').slideDown();
+            }
+        });
+        $('.info input').on('blur', function() {
+            var inputId = $(this).attr('id');
+            var value = $(this).val();
+            if(value && (inputId == 'nick' || inputId == 'email' || inputId == 'phone') ){
+                if(!strExp[inputId].test(value)) {
+                    $(this).css('border-color', '#ea6f5a');
+                    $(this).next('.error').slideDown();
+                    $(this).addClass('bug');
+                }else {
+                    $(this).css('border-color', '#ddd');
+                    $(this).next('.error').slideUp();
+                    $(this).removeClass('bug');
+                }
+            }else {
+                $(this).css('border-color', '#ddd');
+                $(this).next('.error').slideUp();
+                $(this).removeClass('bug'); 
+            }
+        })
         $("#register1").click(function(){ 
             var username = $("#username").val();
             var password = $("#password").val();
             var password1 = $("#password1").val();
+            var nick = $("#nick").val();
+            var email = $("#email").val();
+            var phone = $('#phone').val();
+            var address = $("#address").val();
+            var selfdesc = $('#desc').val();
+
+            if(!username || !password1 || !password) return;
             if(password !== password1){ 
                 $("#password").css("border","1px solid red");
                 $("#password1").css("border","1px solid red");
             }else if(password === password1){
             var data = {"uname":username,"upwd":password};
+
+            if(!nick) {
+                $("#nick").css('border-color', '#ea6f5a');return;
+            }
+            if(!email) {
+                $("#email").css('border-color', '#ea6f5a');return;
+            }
+            if(!phone) {
+                $("#phone").css('border-color', '#ea6f5a');return;
+            }
+            if(!address) {
+                $("#address").css('border-color', '#ea6f5a');return;
+            }
+            data.nick = nick;
+            data.email = email;
+            data.phone = phone;
+            data.address = address;
+            selfdesc && (data.selfdesc = selfdesc);
+
             $.ajax({ 
                 url: '/register',
                 type: 'post',

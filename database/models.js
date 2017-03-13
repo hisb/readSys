@@ -13,7 +13,7 @@ module.exports = {
         nick: {type: String}, //昵称
         email: {type: String},
         phone: {type: String},
-        adress: {type: String},
+        address: {type: String},
         imgSrc: {type: String},
         selfdesc: {type: String}, //个人简介
         cdate: {type: Date},

@@ -5,6 +5,10 @@ body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+.fh5co-offcanvas .fh5co-bio a{
+	padding: 5px 0;
+	display: inline-block;
+}
 article .divContainer {
 	position: relative; 
 	overflow: hidden;
