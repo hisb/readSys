@@ -122,7 +122,7 @@ router.route("/user/update").get(function (req, res) {
                 nick: req.body.nick,
                 email: req.body.email,
                 phone: req.body.phone,
-                adress: req.body.adress,
+                address: req.body.address,
                 selfdesc: req.body.selfdesc,
                 udate: Date.now()
             }, function (err, doc) {
