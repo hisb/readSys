@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+// var multer = require('multer');
 var mongoose = require('mongoose');
 
 var routes = require('./routes/index');
@@ -25,6 +26,7 @@ global.db = mongoose.connect("mongodb://172.16.39.31:27017/yl",function(err){
 
 // 下边这里也加上 use(multer())
 app.use(bodyParser.urlencoded({ extended: true }));
+/*app.use(multer());*/
 app.use(cookieParser());
 
 app.use(session({
