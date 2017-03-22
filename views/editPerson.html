@@ -60,7 +60,9 @@
 		<div class="row fh5co-post-entry" style = 'width:40%; margin: 0 auto'>
 			<div class = '' style = 'font-size:20px'>
 				<span class="input input--hoshi" style = 'text-align: center; position: relative'>
-					<input type = 'file' value = '' style= 'display: inline-block; width: 50%; margin: 0 auto; border: none; opacity: 0' id = 'filePerson' />
+					<form id = 'uploadPic' enctype="multipart/form-data">
+						<input type = 'file' name="avatar" value = '' style= 'display: inline-block; width: 50%; margin: 0 auto; border: none; opacity: 0' id = 'filePerson' />
+					</form>
 					<a style = 'position: absolute; top: 0; left: 50%; width: 50%; margin-left: -25%; z-index: -1'><i class = 'glyphicon glyphicon-upload'></i>上传图像</a></br>
 					<img id = 'personPhoto' src = '' />
 					<!-- <div style = 'width: 200px; height: 200px; border: 1px solid #000; line-height: 200px; font-size: 150%; display: inline-block; '>
@@ -134,6 +136,23 @@
 
 	<script>
 		$(function() {
+			$('input[type="file"]').on('change', function() {
+				var formData = new FormData();
+				// this.files[0].path = $(this).val();
+				formData.append('file', $('#filePerson')[0].files[0]);
+				console.log(this.files[0]);
+				$.ajax({
+					url: '/avatarUpload',
+					type: 'post',
+					data: formData,
+					cache: false,
+					processData: false,
+    				contentType: false
+				}).done((data) => {
+					console.log(data);
+				});
+			});
+
 			$.ajax({
 				url: '/userUpdate',
 				type: 'get'

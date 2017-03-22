@@ -1,5 +1,9 @@
 var express = require('express');
 var router = express.Router();
+var fs = require("fs")
+var multer = require('multer');
+var path = require('path');
+var upload = multer({dest: path.join(__dirname+'/images') });
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.redirect("/login");
@@ -12,7 +16,7 @@ router.get('/', function (req, res, next) {
 router.get('/home', function (req, res) {
 	var categoryM = global.dbHandel.getModel("category");	
     categoryM.find().populate("books").exec(function (err, categorys) {
-        console.log(JSON.stringify(categorys));
+        //print(categorys);
         res.render("home", {title: 'Home', datas: categorys});
     });
     
@@ -56,6 +60,18 @@ router.get("/logout", function (req, res) {
     sessionClear(req, res);
 })
 
+//头像上传
+router.post("/avatarUpload", upload.single("avatar"), function (req, res) {
+    print(req.file)
+    fs.readFile(req.file.path, function (err, data) {
+        fs.writeFile(global.dirname+ "/public/images/" + req.file.filename + path.extname(req.file.originalname), data, function (err) {
+            if (err)
+                printStr("upload avatar errr")
+            else
+                res.send("images/" + req.file.filename + path.extname(req.file.originalname));
+        });
+    });
+})
 
 /* GET register page. */
 router.route("/register").get(function (req, res) {    // 到达此路径则渲染register文件，并传出title值供 register.html使用
