@@ -144,7 +144,7 @@
             var email = $("#email").val();
             var phone = $('#phone').val();
             var address = $("#address").val();
-            var selfdesc = $('#desc').val();
+            var desc = $('#desc').val();
 
             if(!username || !password1 || !password) return;
             if(password !== password1){ 
@@ -169,7 +169,7 @@
             data.email = email;
             data.phone = phone;
             data.address = address;
-            selfdesc && (data.selfdesc = selfdesc);
+            desc && (data.desc = desc);
 
             $.ajax({ 
                 url: '/register',

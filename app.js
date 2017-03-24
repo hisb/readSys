@@ -16,7 +16,7 @@ var app = express();
 
 
 global.dbHandel = require('./database/dbHandel');
-global.db = mongoose.connect("mongodb://172.16.39.90:27017/yl",function(err){
+global.db = mongoose.connect("mongodb://127.0.0.1:27017/yl",function(err){
     if(err){
         console.log("init mongo connection fail...")
         return ;
@@ -61,27 +61,27 @@ app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-global.dirname = __dirname;
+
 app.use('/', routes);  // 即为为路径 / 设置路由
 app.use('/home',routes); // 即为为路径 /home 设置路由
 
 app.use('/login',routes); // 即为为路径 /login 设置路由
 app.use('/register',routes); // 即为为路径 /register 设置路由
 app.use("/logout",routes); // 即为为路径 /logout 设置路由
-app.use('/user/update',routes); // 即为为路径 /register 设置路由
-app.use('/user/myshare',routes); // 即为为路径 /register 设置路由
-app.use('/user/myhunger',routes); // 即为为路径 /register 设置路由
+app.use('/userUpdate',routes); // 即为为路径 /register 设置路由
+app.use('/userMyshare',routes); // 即为为路径 /register 设置路由
+app.use('/userMyhunger',routes); // 即为为路径 /register 设置路由
 
-app.use('/category/list',routes); // 即为为路径 /register 设置路由
-app.use('/category/more/:categoryid',routes); // 即为为路径 /register 设置路由
+app.use('/categoryList',routes); // 即为为路径 /register 设置路由
+app.use('/categoryMore',routes); // 即为为路径 /register 设置路由
 
-app.use('/book/share',routes); // 即为为路径 /register 设置路由
-app.use('/book/detail/:bookid',routes); // 即为为路径 /register 设置路由
-app.use('/book/hunger/:bookid',routes); // 即为为路径 /register 设置路由
-app.use('/book/status',routes); // 即为为路径 /register 设置路由
+app.use('/bookShare',routes); // 即为为路径 /register 设置路由
+app.use('/bookDetail',routes); // 即为为路径 /register 设置路由
+app.use('/bookHunger',routes); // 即为为路径 /register 设置路由
+app.use('/bookStatus',routes); // 即为为路径 /register 设置路由
 
-app.use('/feel/add',routes); // 即为为路径 /register 设置路由
-app.use('/feel/agree/:feelid',routes); // 即为为路径 /register 设置路由
+app.use('/feelAdd',routes); // 即为为路径 /register 设置路由
+app.use('/feelAgree',routes); // 即为为路径 /register 设置路由
 
 app.use('/editPerson',routes);
 

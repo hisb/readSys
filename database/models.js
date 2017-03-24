@@ -15,7 +15,7 @@ module.exports = {
         phone: {type: String},
         address: {type: String},
         imgSrc: {type: String},
-        selfdesc: {type: String}, //个人简介
+        desc: {type: String}, //个人简介
         cdate: {type: Date},
         udate: {type: Date},
         shareds: [  //分享的书
