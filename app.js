@@ -16,7 +16,7 @@ var app = express();
 
 
 global.dbHandel = require('./database/dbHandel');
-global.db = mongoose.connect("mongodb://172.16.39.90:27017/yl",function(err){
+global.db = mongoose.connect("mongodb://localhost:27017/yl",function(err){
     if(err){
         console.log("init mongo connection fail...")
         return ;
@@ -76,7 +76,7 @@ app.use('/category/list',routes); // 即为为路径 /register 设置路由
 app.use('/category/more/:categoryid',routes); // 即为为路径 /register 设置路由
 
 app.use('/book/share',routes); // 即为为路径 /register 设置路由
-app.use('/book/detail/:bookid',routes); // 即为为路径 /register 设置路由
+app.use('/bookDetail',routes); // 即为为路径 /register 设置路由
 app.use('/book/hunger/:bookid',routes); // 即为为路径 /register 设置路由
 app.use('/book/status',routes); // 即为为路径 /register 设置路由
 

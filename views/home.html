@@ -45,25 +45,12 @@
 					<img src="<% if(user.imgSrc){ %> <%= user.imgSrc %> <% }else{ %> images/person1.jpg <%}%>" alt="Free HTML5 Bootstrap Template" class="img-responsive">
 			</figure>
 			<h3 class="heading">About Me</h3>
-<<<<<<< 063375eb9cdd78be509039ce3c305d90a596843a
-			<% if(user){ %>
-				<h2><%= user.name %></h2>
-				<p>用一句话介绍你自己.</p>
-				<a href = '/share'>我要分享</a></br>
-				<h2><%= user.nick %></h2>
-				<p><%= user.desc %>.</p>
-				<a href = '/share'>我的分享</a></br>
-			    <a href = '/share'>我的借书</a></br>
-				<a href = '/logout'>退出</a>
-=======
-
 			<h2><%= user.nick %></h2>
 			<p><%= user.desc %>.</p>
 			<a href = '/editPerson'>编辑资料</a></br>
 			<a href = '/bookShare'>我的分享</a></br>
 		    <a href = '/share'>我的借书</a></br>
 			<a href = '/logout'>退出</a>
->>>>>>> 缓存
 			<%}else{%>
 			<a href = '/login'>登录</a>
 			<a href = '/register'>注册</a>
@@ -73,19 +60,10 @@
 		<div class="fh5co-menu">
 			<div class="fh5co-box">
 				<h3 class="heading">分类</h3>
-<<<<<<< 063375eb9cdd78be509039ce3c305d90a596843a
-				<ul>
-					<li><a href="#">文学</a></li>
-					<li><a href="#">小说</a></li>
-					<li><a href="#">历史</a></li>
-					<li><a href="#">艺术 &amp; 摄影</a></li>
-					<li><a href="#">计算机与互联网</a></li>
-=======
 				<ul id = 'category'>
 					<%datas.forEach(function(category){%>
 						<li><a href="/categoryMore?categoryid=<%= category._id %>"><%=category.name%></a></li>
 					<%})%>
->>>>>>> 缓存
 				</ul>
 			</div>
 			<!-- <div class="fh5co-box">
@@ -108,7 +86,10 @@
 				<div class="col-lg-12 col-md-12 text-center">
 					<h1 id="fh5co-logo"><a href="home">用书，感受世事浮沉</a></h1>
 				</div>
-
+				<!-- <form action="/avatarUpload" method="post" enctype="multipart/form-data">
+					<input type="file" name="avatar" size="50" /><br />
+					<input type="submit" value="上传文件" />            
+				</form> -->
 			</div>
 		
 		</div>
@@ -131,27 +112,19 @@
 				if(i < 3){
 			%>
 				<article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
-					<div class = 'classify'>
+					<div class = 'divContainer'>
 						<figure>
-							<a href=/categoryMore?categoryid=<%= item._id %> style = "display: block;font-size: 20px;"><%= item.name %></a>
+							<a href="/bookDetail?bookid=<%= item.books[i]._id %>"><img src=" <%= item.books[i].imgSrc %>" alt="Image" class="img-responsive"></a>
 						</figure>
+						<div class = 'infor'>
+							<span class="fh5co-meta"><%= item.books[i].author %> 著</span>
+							<h3 class="fh5co-article-title"><a href="/bookDetail?bookid=<%= item.books[i]._id %>"><%= item.books[i].title %></a></h3></br>
+							<span class="fh5co-meta fh5co-date">前方 <%= item.books[i].number %> 人订阅</span>
+							<span class="fh5co-meta"><a href="/detail">参与排队</a></span>
+						</div>
 					</div>
 				</article>
-				<% for(var i = 0; i < item.data.length; i++) { %>
-					<article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
-						<div class = 'divContainer'>
-							<figure>
-								<a href="/detail"><img src=" <%= item.data[i].imgSrc %>" alt="Image" class="img-responsive"></a>
-							</figure>
-							<div class = 'infor'>
-								<span class="fh5co-meta"><%= item.data[i].author %> 著</span>
-								<h3 class="fh5co-article-title"><a href="/detail"><%= item.data[i].title %></a></h3></br>
-								<span class="fh5co-meta fh5co-date">前方 <%= item.data[i].number %> 人订阅</span>
-								<span class="fh5co-meta"><a href="/detail">参与排队</a></span>
-							</div>
-						</div>
-					</article>
-				<% } %>
+				<% } } %>
 			</section>
 			<% }) %>
 		</div>

@@ -16,7 +16,7 @@ router.get('/', function (req, res, next) {
 router.get('/home', function (req, res) {
 	var categoryM = global.dbHandel.getModel("category");	
     categoryM.find().populate("books").exec(function (err, categorys) {
-        //print(categorys);
+        // print(categorys);
         res.render("home", {title: 'Home', datas: categorys});
     });
     
@@ -117,7 +117,7 @@ router.get('/editPerson', function(req, res) {
 
  
 //修改用户信息
-router.route("/user/update").get(function (req, res) {
+router.route("/userUpdate").get(function (req, res) {
     var userId = sessionUserId(req, res);
     var User = global.dbHandel.getModel('user');
     User.findById(userId, function (err, doc) {  //先把用户原有的信息填写到旧的表格
@@ -202,7 +202,7 @@ router.get("/category/more/:categoryid", function (req, res) {
 //分享书籍(添加)
 router.route("/bookShare").get(function (req, res) {
     res.render("share", {title: "share"});
-}).post("/book/share", function (req, res) {
+}).post(function (req, res) {
     var userId = sessionUserId(req, res);
     var book = {
         title: req.body.title,
@@ -267,24 +267,27 @@ router.get("/book/update/:bookid", function () {
             console.log(err);
         } else {
             printStr("书籍信息修改成功")
-            res.redirect("/book/detail/" + req.params.bookid);
+            res.redirect("/bookDetail?bookid=" + req.params.bookid);
         }
     })
 });
 
 
 //书详情
-router.get("/book/detail/:bookid", function (req, res) {
+router.get("/bookDetail", function (req, res) {
+    res.render("detail");
+});
+router.get('/detail', function(req, res) {
     var bookM = global.dbHandel.getModel("book");
     bookM.findById(req.query.bookid).populate("feels").populate("hungers").exec(function (err, bookdoc) {
         var user = global.dbHandel.getModel("user");
         user.findById(bookdoc.owner,function(err,userdoc){
-            bookdoc.owner = userdoc.name;
-            print(bookdoc)
-            res.render("detail", {title: 'detail', datas: bookdoc});
+            bookdoc.owner = userdoc.name;print(bookdoc);
+            res.send(bookdoc);
+            // res.render("detail", {title: 'detail', datas: bookdoc});
         })
     });
-});
+})
 //参与排队看书
 router.get("/book/hunger/:bookid", function (req, res) {
     var userId = sessionUserId(req, res);
@@ -340,7 +343,7 @@ router.get("/book/status", function (req, res) {
  * 读后感相关
  */
 //添加评论
-router.post("/feel/add", function (req, res) {
+router.post("/feelAdd", function (req, res) {
     var userId = sessionUserId(req, res);
     var userM = global.dbHandel.getModel("user");
     userM.findById(userId,function(err,userdoc){
@@ -356,7 +359,7 @@ router.post("/feel/add", function (req, res) {
                 agree: 0,
                 cdate: Date.now(),
                 udate: Date.now()
-            }, function (err, feeldoc) {
+            }, function (err, feeldoc) {print(feeldoc);
                 var bookM = global.dbHandel.getModel("book");
                 bookM.findById(req.body.bookid, function (err, bookdoc) {
                     bookdoc.feels.push(feeldoc._id);

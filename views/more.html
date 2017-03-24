@@ -98,11 +98,11 @@
 			<article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
 				<div class = 'divContainer'>
 					<figure>
-						<a href="/detail"><img src="/<%= item.imgSrc %>" alt="Image" class="img-responsive"></a>
+						<a href="/bookDetail?bookid=<%= item._id %>"><img src="/<%= item.imgSrc %>" alt="Image" class="img-responsive"></a>
 					</figure>
 					<div class = 'infor'>
 						<span class="fh5co-meta"><a href="/detail"><%= item.author %> 著</a></span>
-						<h3 class="fh5co-article-title"><a href="/detail"><%= item.title %></a></h3></br>
+						<h3 class="fh5co-article-title"><a href="/bookDetail?bookid=<%= item._id %>"><%= item.title %></a></h3></br>
 						<span class="fh5co-meta fh5co-date">前方 <%= item.hungers.length %> 人订阅</span>
 						<span class="fh5co-meta"><a href="/detail">参与排队</a></span>
 					</div>
