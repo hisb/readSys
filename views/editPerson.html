@@ -187,8 +187,8 @@
             data.imgSrc = $("#avatarImgSrc").val();
             $.post("/userUpdate",data,function(data){
                 if(msg = 'OK') {
-                    alert('个人信息修改成功,请重新登录');
-                    location.href = "/logout";
+                    alert('个人信息修改成功');
+                    location.href = "/home";
                 }
             })
         })

@@ -3,7 +3,7 @@ var router = express.Router();
 var fs = require("fs")
 var multer = require('multer');
 var path = require('path');
-var upload = multer({dest: '/images'});
+var upload = multer({dest: path.join(__dirname+'/images') });
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.redirect("/home");
@@ -15,7 +15,6 @@ router.get('/', function (req, res, next) {
 router.get("/home", function (req, res) {
     var categoryM = global.dbHandel.getModel("category");
     categoryM.find().populate("books").exec(function (err, categorys) {
-        print(categorys);
         res.render("home", {title: 'Home', datas: categorys});
     });
 });
@@ -59,17 +58,20 @@ router.get("/logout", function (req, res) {
 })
 
 //头像上传
-router.post("/avatarUpload", upload.single("avatar"), function (req, res) {
-    var des_file = req.file.destination + "/" + req.file.filename + path.extname(req.file.originalname);
-    fs.readFile(req.file.path, function (err, data) {
-        fs.writeFile("public" + des_file, data, function (err) {
-            if (err)
-                printStr("upload avatar errr")
-            else
-                res.send(des_file);
-        });
-    });
-})
+ router.post("/avatarUpload", upload.single("avatar"), function (req, res) {
+
+     fs.readFile(req.file.path, function (err, data) {
+        fs.writeFile(global.dirname+ "/public/images/" + req.file.filename + path.extname(req.file.originalname), data, function (err) {
+
+             if (err)
+                 printStr("upload avatar errr")
+             else
+                res.send("images/" + req.file.filename + path.extname(req.file.originalname));
+
+         });
+     });
+ })
+
 
 /* GET register page. */
 router.route("/register").get(function (req, res) {    // 到达此路径则渲染register文件，并传出title值供 register.html使用
@@ -111,7 +113,7 @@ router.route("/register").get(function (req, res) {    // 到达此路径则渲�
     });
 });
 
-//修改用户信息
+//获取用户信息
 router.route("/userInfo").get(function (req, res) {
     var User = global.dbHandel.getModel('user');
     var userId = sessionUserId(req, res);
@@ -147,8 +149,13 @@ router.route("/userUpdate").get(function (req, res) {
                     res.send(500);
                     console.log(err);
                 } else {
-                    req.session.error = '用户修改成功！';
-                    res.send(200);
+                    User.findById(userId, function (err, doc) {
+                        req.session.user = doc;
+                        req.session.error = '用户修改成功！';
+                        res.send(200);
+                    });
+                    
+                    
                 }
             });
         }

@@ -13,6 +13,7 @@ var pageRoutes = require('./routes/pageRoute');
 
 var session = require('express-session');
 var app = express();
+global.dirname = __dirname;
 
 
 global.dbHandel = require('./database/dbHandel');
