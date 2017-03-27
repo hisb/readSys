@@ -40,16 +40,7 @@
                 <img src="images/person1.jpg" alt="Free HTML5 Bootstrap Template" class="img-responsive">
               </figure>
               <h3 class="heading">About Me</h3>
-                <% if(user){ %>
-                <h2><%= user.name %></h2>
-                <p>用一句话介绍你自己.</p>
-                <a href = '/share'>我的分享</a></br>
-                <a href = '/share'>我的借书</a></br>
-                <a href = '/logout'>退出</a>
-                <%}else{%>
-                <a href = '/login'>登录</a>
-                <a href = '/register'>注册</a>
-                <%}%>
+                this is userINfo
             </div>
 
             <div class="fh5co-menu">
@@ -93,37 +84,24 @@
                 <article class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0 content-detail">
                     <section class = 'col-lg-12 col-md-12'>
                         <figure class="col-lg-6 animate-box detail-head">
-                            <img src="<%=datas.imgSrc%>" alt="Image" class="img-responsive">
+                            <img id = 'bookImg' src="" alt="Image" class="img-responsive">
                         </figure>
                         <figure class = 'col-lg-6 animate-box'>
                             <dl class = 'detail-card'>
-                                <dt><%=datas.title%></dt>
+                                <dt id = 'bookName'></dt>
                                 <dd>
-                                    <span><%=datas.author%> 著</span>
-                                    <span>由 <%=datas.owner%> 分享</span>
-                                    <span>
-                                        <%  var exist = false;
-                                        for(var i = 0 ;i < datas.hungers.length;i++){
-                                        var hun = datas.hungers[i];
-                                        if(user && user._id && user._id == hun._id)
-                                            exist = true;
-                                        %>
-                                            <%=hun.name%>
-                                        <%}%>
-                                        等 <%=datas.hungers.length%> 人正在排队订阅</span>
-                                    <% if(!exist){%>
-                                        <span class="fh5co-meta orderBtn"><a href="/bookHunger?bookid=<%=datas._id%>">参与排队</a></span>
-                                    <%}else{%>
-                                        <span class="fh5co-meta orderBtn">排队中</span>
-                                    <%}%>
-
+                                    <span id = 'author'></span>
+                                    <span id = 'owner'></span>
+                                    <span id = 'hunger'></span>
+                                    <span class="fh5co-meta toHunger"><a href="/bookHunger" id = 'toHunger'>参与排队</a></span>
+                                    <!-- <span class="fh5co-meta hungerStatus">排队中</span> -->
                                 </dd>
                             </dl>
                         </figure>
                     </section>
                     
                     
-                    <span class="col-lg-12 fh5co-meta animate-box summary">《<%=datas.title%>》内容简介：<%=datas.desc%> </span>
+                    <span class="col-lg-12 fh5co-meta animate-box summary"> 内容简介： </span>
 
                     <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
                         <figure class="animate-box">
@@ -131,110 +109,18 @@
                                 <span>我来说一句</span>
                             </legend>
                             <ul class = 'commentList'>
-                                <% for(var j = 0;j < datas.feels.length;j++){
-                                    var feel = datas.feels[j];
-                                %>
                                 <li>
-                                    <img src = '<%=feel.imgSrc%>' class = 'personImg'/>
+                                    <img src = '' class = 'personImg'/>
                                     <span class = 'text'>
-                                        <%=feel.usernick%> </br><%=feel.content%></br><%=feel.cdate%>
                                     </span>
                                 </li>
-                                <%}%>
+
 
                             </ul>
                             <div class = divCont>
-                                <input type = 'text' class = 'commentSend' placeholder = '我来说一句' /><label><i class = 'glyphicon glyphicon-send'></i></label>
+                                <input type = 'text' class = 'commentSend' placeholder = '我来说一句' /><label id = 'submitComment'><i class = 'glyphicon glyphicon-send'></i></label>
                             </div>
                         </figure>
-                        <!-- <div class="row">
-                            <div class="col-lg-8 cp-r animate-box">
-                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large <a href="#">language</a> ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-
-                                <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. </p>
-
-                                <p>She packed her seven versalia, put her initial into the belt and made herself on the way. When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way.</p>
-                            </div>
-                            <div class="col-lg-4 animate-box">
-                                <div class="fh5co-highlight right">
-                                    <h4>Highlight</h4>
-                                    <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row rp-b">
-                            <div class="col-md-12 animate-box">
-                                <blockquote>
-                                    <p>&ldquo;She packed her seven versalia, put her initial into the belt and made herself on the way. When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove &rdquo; <cite>&mdash; Jean Smith</cite></p>
-                                </blockquote>
-                            </div>
-                        </div>
-
-                        <div class="row rp-b">
-                            <div class="col-lg-6 col-md-12 animate-box">
-                                <figure>
-                                    <img src="images/pic_1.jpg" alt="Free HTML5 Bootstrap Template by FREEHTML5.co" class="img-responsive">
-                                    <figcaption>This is a sweet image caption. Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</figcaption>
-                                </figure>
-                            </div>
-                            <div class="col-lg-6 col-md-12 cp-l animate-box">
-                                <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. </p>
-
-                                <p>She packed her seven versalia, put her initial into the belt and made herself on the way. When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way.</p>
-
-                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large <a href="#">language</a> ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                            </div>
-                        </div>
-
-                        <div class="row rp-b">
-                            <div class="col-lg-6 col-lg-push-6 col-md-12 col-md-push-0 animate-box">
-                                <figure>
-                                    <img src="images/pic_4.jpg" alt="Free HTML5 Bootstrap Template by FREEHTML5.co" class="img-responsive">
-                                    <figcaption>This is a sweet image caption. Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</figcaption>
-                                </figure>
-                            </div>
-                            <div class="col-lg-6 col-lg-pull-6 col-md-12 col-md-pull-0 cp-r animate-box">
-                                <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. </p>
-
-                                <p>She packed her seven versalia, put her initial into the belt and made herself on the way. When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way.</p>
-
-                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large <a href="#">language</a> ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12 animate-box">
-                                <h2>Pointing has no control about the blind texts</h2>
-                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large <a href="#">language</a> ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                                <p>She packed her seven versalia, put her initial into the belt and made herself on the way. When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way.</p>
-                            </div>
-                            <div class="col-md-4 animate-box">
-                                <figure>
-                                    <img src="images/pic_5.jpg" alt="Free HTML5 Bootstrap Template by FREEHTML5.co" class="img-responsive">
-                                    <figcaption>This is a sweet image caption. Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</figcaption>
-                                </figure>
-                            </div>
-                            <div class="col-md-4 animate-box">
-                                <figure>
-                                    <img src="images/pic_6.jpg" alt="Free HTML5 Bootstrap Template by FREEHTML5.co" class="img-responsive">
-                                    <figcaption>This is a sweet image caption. Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</figcaption>
-                                </figure>
-                            </div>
-                            <div class="col-md-4 animate-box">
-                                <figure>
-                                    <img src="images/pic_7.jpg" alt="Free HTML5 Bootstrap Template by FREEHTML5.co" class="img-responsive">
-                                    <figcaption>This is a sweet image caption. Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</figcaption>
-                                </figure>
-                            </div>
-                            <div class="col-md-12 animate-box">
-                                <h2>Pointing has no control about the blind texts</h2>
-                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large <a href="#">language</a> ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-                                <p>She packed her seven versalia, put her initial into the belt and made herself on the way. When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way.</p>
-                            </div>
-                        </div> -->
-                      
-                      
                     </div>
                 </article>
             </div>
@@ -255,7 +141,95 @@
         <!-- Waypoints -->
         <script src="javascripts/jquery.waypoints.min.js"></script>
         <!-- Main JS -->
+        <script src="javascripts/common.js"></script>
         <script src="javascripts/main.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                var bookid = getUrlParam('bookid');
+                var userId;
+                $.ajax({
+                    url: 'detail',
+                    type: 'get',
+                    data: {bookid: bookid}
+                }).done((data) => {
+                    toJoinHtml(data);
+                });
+
+                $.ajax({
+                    url: '/userInfo',
+                    type: 'get'
+                }).done((data) => {
+                    userId = data.data._id;
+                });
+
+                $('#submitComment').on('click', function() {
+                    var _this = $(this);
+                    var comment = _this.prev('input').val();
+                    var data = {};
+                    data.bookid = bookid;
+                    data.content = comment;
+                    if(comment) {
+                        $.ajax({
+                            url: '/feelAdd',
+                            type: 'post',
+                            data: data
+                        }).done((res) => {
+                            if(res.status == 'OK') {
+                                updateCommentList(res.data);
+                                _this.prev('input').val('');
+                            }
+                        })
+                    }
+                })
+
+                function updateCommentList(data) {
+                    $('.commentList').append('<li><img src = "' + data.imgSrc + '" class = "personImg"/><span class = "text">' + data.usernick + '<br>' + data.content + '&ensp;' + dateToStr(new Date(data.date)) + '</span></li>');
+                }
+
+                function toJoinHtml(data) {
+                    $('#bookImg').attr('src', data.imgSrc);
+                    $('#bookName').text(data.title);
+                    $('#author').text(data.author + ' 著');
+                    $('#owner').text('由 ' + data.owner + ' 分享');
+                    $('.summary').text(data.desc);
+                    $('#hunger').text(hunger(data.hungers));
+                    setStatus(data.hungers);
+                    var commentStr = '';
+                    $.each(data.feels, function(index, item) {
+                        var date = dateToStr(new Date(item.cdate));
+                        commentStr += '<li><img src = "' + item.imgSrc + '" class = "personImg"/><span class = "text">' + item.usernick + '<br>' + item.content + '&ensp;' + date + '</span></li>';
+                    })
+                    $('.commentList').html(commentStr);
+                };
+                function hunger(data) {
+                    var html = '';
+                    if(data.length == 0) {
+                        html = '前面 0 人正在排队';
+                    }else {
+                        var hunger = [];
+                        $.each(data, function(index, item) {
+                            if(index < 5 && item._id !==userId) {
+                                hunger.push(item.name);
+                            }
+                        })
+                        html = hunger.join('、') + '等' + data.length + ' 人正在排队';
+                    }
+                    return html;
+                };
+
+                function setStatus(data) {
+                    $.each(data, function(index, item) {
+                        if(item._id == userId) {
+                            $('#toHunger').text('放弃排队');
+                        }else {
+                            $('#toHunger').text('参与排队');
+                        }
+                    })
+
+                }
+            });
+        </script>
 
     </body>
 </html>

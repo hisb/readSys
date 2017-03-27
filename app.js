@@ -17,7 +17,8 @@ global.dirname = __dirname;
 
 
 global.dbHandel = require('./database/dbHandel');
-global.db = mongoose.connect("mongodb://127.0.0.1:27017/yl",function(err){
+
+global.db = mongoose.connect("mongodb://localhost:27017/yl",function(err){
     if(err){
         console.log("init mongo connection fail...")
         return ;
@@ -72,6 +73,7 @@ app.use("/logout",routes); // 即为为路径 /logout 设置路由
 app.use('/userUpdate',routes); // 即为为路径 /register 设置路由
 app.use('/userMyshare',routes); // 即为为路径 /register 设置路由
 app.use('/userMyhunger',routes); // 即为为路径 /register 设置路由
+app.use('/userInfo',routes); // 即为为路径 /register 设置路由
 
 app.use('/categoryList',routes); // 即为为路径 /register 设置路由
 app.use('/categoryMore',routes); // 即为为路径 /register 设置路由
@@ -83,8 +85,6 @@ app.use('/bookStatus',routes); // 即为为路径 /register 设置路由
 
 app.use('/feelAdd',routes); // 即为为路径 /register 设置路由
 app.use('/feelAgree',routes); // 即为为路径 /register 设置路由
-
-app.use('/editPerson',routes);
 
 // catch 404 and forward to error handler
 /*app.use(function(req, res, next) {

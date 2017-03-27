@@ -103,11 +103,7 @@ module.exports = {
         },
         agree: {type: Number},
         cdate: {type: Date},
-        udate: {type: Date},
-        userId: {
-            type: String,
-            required: true
-        }
+        udate: {type: Date}
     }
 
 

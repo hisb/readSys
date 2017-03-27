@@ -35,7 +35,11 @@
     <!--[if lt IE 9]>
     <script src="js/respond.min.js"></script>
     <![endif]-->
-
+    <style>
+        #filePerson { display: inline-block; width: 50%; margin: 0 auto; border: none; opacity: 0 }
+        .uploadPic { position: absolute; top: 0; left: 50%; width: 50%; margin-left: -25%; z-index: -1 }
+        .imgSize { width: 200px; height: 200px; border-radius: 100%; } 
+    </style>
 </head>
 <body>
 <!-- END #fh5co-offcanvas -->
@@ -61,16 +65,11 @@
         <div class='' style='font-size:20px'>
 				<span class="input input--hoshi" style='text-align: center; position: relative'>
                     <form action="/avatarUpload" method="post" enctype="multipart/form-data">
-                        <input type="file" name="avatar" style='display: inline-block; width: 50%; margin: 0 auto; border: none; opacity: 0'
-                               id='filePerson'><br>
+                        <input type="file" name="avatar" id='filePerson'><br>
                     </form>
                     <input type="hidden" value="" id="avatarImgSrc" />
-					<a style='position: absolute; top: 0; left: 50%; width: 50%; margin-left: -25%; z-index: -1'><i
-                            class='glyphicon glyphicon-upload'></i>上传图像</a></br>
-                    <img id='personPhoto' src=''/>
-                    <!-- <div style = 'width: 200px; height: 200px; border: 1px solid #000; line-height: 200px; font-size: 150%; display: inline-block; '>
-                    </div> -->
-					
+					<a class = 'uploadPic'><i class='glyphicon glyphicon-upload'></i>上传图像</a></br>
+                    <img id='personPhoto' src='' class = 'imgSize'/>
 				</span>
 				<span class="input input--hoshi">
 					<input class="input__field input__field--hoshi" type="password" id="password"/>

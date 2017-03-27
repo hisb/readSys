@@ -35,7 +35,18 @@
 	<!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
-
+	<style>
+		*{ margin: 0; padding: 0;}
+		.uploadCover { position: absolute; width: 100px; top: 0; left: 50%; margin-left: -50px; opacity: 0; }
+		.classifyTitle { color: #6a7989; font-size: 80%; font-weight: bold; padding-left: 5px; }
+		.select-list { position: relative; font-size: 16px; color: #595F6E; box-sizing: border-box; display: inline-block; margin: 0 0 20px 30px;}
+		.select-list .select-value { line-height: 30px; width: 200px; border: 2px solid #ddd; position: relative; padding-left: 10px; display: inline-block; }
+		.select-list .select-option { position: absolute; top: 34px; left: 0; list-style: none; width: 100%; border: 2px solid #ddd; border-top: none; display: none;}
+		.select-list .select-option li { padding: 5px 10px; }
+		.select-list .select-option li:hover, .selected { background-color: #f7c873; color: #fff; }
+		.select-list i { position: absolute; right: 5px; top: 0; line-height: 30px;}
+		.coverUrl { max-width: 300px; max-height: 300px; margin-top: 20px;}
+	</style>
 	</head>
 	<body>
 	<!-- END #fh5co-offcanvas -->
@@ -59,26 +70,38 @@
 	<div class="container-fluid">
 		<div class="row fh5co-post-entry" style = 'width:40%; margin: 0 auto'>
 			<div class = '' style = 'font-size:20px'>
-				<span class="input input--hoshi" style = 'text-align: center'>
+				<span class="input input--hoshi" style = 'text-align: center; margin-bottom: 30px'>
 					<a><i class = 'glyphicon glyphicon-upload'></i>上传封面</a></br>
-					<!-- <div style = 'width: 200px; height: 200px; border: 1px solid #000; line-height: 200px; font-size: 150%; display: inline-block; '>
-					</div> -->
-					
+					<form enctype="multipart/form-data">
+						<input type = 'file' class = 'uploadCover' name = 'cover'/>
+					</form>
+					<input type = 'hidden' value = '' class = 'hiddUrl' />
+					<img class = 'coverUrl' src = '' alt = '' />
+				</span>
+				<span>
+					<span class="classifyTitle">分类</span>
+					<div class = 'select-list'>
+						<p class = 'select-value'>文学<i class = 'glyphicon glyphicon-chevron-down'></i></p>
+						<ul class = 'select-option'>
+							<li class = 'selected'>文学</li>
+							<li>历史</li>
+						</ul>
+					</div>
 				</span>
 				<span class="input input--hoshi">
-					<input class="input__field input__field--hoshi" type="text" id="input-4" />
+					<input class="input__field input__field--hoshi title" type="text" id="input-4" />
 					<label class="input__label input__label--hoshi input__label--hoshi-color-1" for="input-4">
 						<span class="input__label-content input__label-content--hoshi">书名</span>
 					</label>
 				</span>	
 				<span class="input input--hoshi">
-					<input class="input__field input__field--hoshi" type="text" id="input-4" />
+					<input class="input__field input__field--hoshi author" type="text" id="input-4" />
 					<label class="input__label input__label--hoshi input__label--hoshi-color-1" for="input-4">
 						<span class="input__label-content input__label-content--hoshi">作者</span>
 					</label>
 				</span>	
 				<span class="input input--hoshi">
-					<textarea class="input__field input__field--hoshi" type="text" id="input-4" required rows='5' style = 'resize: none'></textarea>
+					<textarea class="input__field input__field--hoshi desc" type="text" id="input-4" required rows='5' style = 'resize: none'></textarea>
 					<label class="input__label input__label--hoshi input__label--hoshi-color-1" for="input-4">
 						<span class="input__label-content input__label-content--hoshi">简介</span>
 					</label>
@@ -88,9 +111,9 @@
 					<label class="input__label input__label--hoshi input__label--hoshi-color-1" for="input-4">
 						<span class="input__label-content input__label-content--hoshi">备注</span>
 					</label>
-					<input class="input__field input__field--hoshi" type="text" id="input-4" />
+					<input class="input__field input__field--hoshi" type="text" id="input-4 ps" />
 				</span>
-				<div style = 'text-align: right'><a><i class  = 'glyphicon glyphicon-share-alt' style = 'font-size: 120%; width: 30px'></i>分享</a></div>
+				<div style = 'text-align: right'><a id = 'toShare'><i class  = 'glyphicon glyphicon-share-alt' style = 'font-size: 120%; width: 30px'></i>分享</a></div>
 			</div>
 		</div>
 
@@ -116,6 +139,73 @@
 	<script src="javascripts/home.js"></script>
 
 	<script src="javascripts/input.js"></script>
+
+	<script src="javascripts/jquery-form.js"></script>
+
+	<script>
+		$(document).ready(function() {
+			$.ajax({
+				url: '/categoryList', 
+				type: 'get'
+			}).done((data) => {
+				var data = JSON.parse(data);
+				var html = createCategoryList(data);
+				$('.select-option').html(html);
+			})
+
+			function createCategoryList(data) {
+				var html = '';
+				$.each(data, function(index, item) {
+					if(index == 0) {
+						html += "<li class = 'selected' categoryId = '" + item._id + "'>" + item.name + "</li>";
+					}else {
+						html += "<li categoryId = '" + item._id + "'>" + item.name + "</li>";
+					}
+				});
+				return html;
+			};
+
+			$('.uploadCover').on('change', function() {
+				$('form').ajaxForm({
+					url: '/coverUpload',
+					type: 'post',
+					success: function(url) {
+						$('.coverUrl').attr('src', url);
+						$('.hiddUrl').val(url);
+					}
+				}).submit();
+			})
+			$(document).on('click', function(event) {
+				var target = event.target || window.event.target;
+				if($(target).parents('div').hasClass('select-list')) {
+					$('.select-option').slideDown();
+					if(target.nodeName == 'LI') {
+						$('.select-option li').removeClass('selected');
+						$(target).addClass('selected');
+						$('.select-option').slideUp();
+					}
+				}else {
+					$('.select-option').slideUp();
+				}
+			});
+
+			$('#toShare').on('click', function() {
+				var data = {};
+				data.title = $('.title').val();
+				data.author = $('.author').val();
+				data.desc = $('.desc').val();
+				data.imgSrc = $('input[type="hidden"]').val();
+				data.categoryId = $('.select-option .selected').attr('categoryId');
+				$.ajax({
+					url: '/bookShare',
+					type: 'post',
+					data: data
+				}).done((data) => {
+					console.log(data);
+				});
+			})
+		});
+	</script>
 
 	</body>
 </html>

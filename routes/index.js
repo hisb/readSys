@@ -208,7 +208,7 @@ router.get("/categoryMore", function (req, res) {
  * 书籍相关
  */
 //分享书籍(添加)
-router.route("/bookShare").get(function () {
+router.route("/bookShare").get(function (req, res) {
     res.render("share", {title: "share"});
 }).post(function (req, res) {
     var userId = sessionUserId(req, res);
@@ -243,16 +243,16 @@ router.route("/bookShare").get(function () {
                 userdoc.save();
             });
             printStr("add book ok....");
-            res.redirect("/book/detail/" + bookdoc._id);
+            res.redirect("/bookDetail?bookid=" + bookdoc._id);
         }
     })
 });
 
 //封面上传
 router.post("/coverUpload", upload.single("cover"), function (req, res) {
-    var des_file = req.file.destination + "/" + req.file.filename + path.extname(req.file.originalname);
+    var des_file = "images/books/" + req.file.filename + path.extname(req.file.originalname);print(req.file);
     fs.readFile(req.file.path, function (err, data) {
-        fs.writeFile("public" + des_file, data, function (err) {
+        fs.writeFile(global.dirname + "/public/" + des_file, data, function (err) {
             if (err)
                 printStr("upload avatar errr")
             else
@@ -288,24 +288,29 @@ router.route("/bookUpdate").get(function () {
             console.log(err);
         } else {
             printStr("书籍信息修改成功")
-            res.redirect("/book/detail/" + req.query.bookid);
+            res.redirect("/bookDetail?bookid=" + req.query.bookid);
         }
     })
 });
 
 
 //书详情
-router.route("/bookDetail").get(function (req, res) {
+
+router.get("/bookDetail", function (req, res) {
+    res.render("detail");
+});
+router.get('/detail', function(req, res) {
     var bookM = global.dbHandel.getModel("book");
     bookM.findById(req.query.bookid).populate("feels").populate("hungers").exec(function (err, bookdoc) {
         var user = global.dbHandel.getModel("user");
-        user.findById(bookdoc.owner, function (err, userdoc) {
-            bookdoc.owner = userdoc.name;
-            res.render("detail", {title: 'detail', datas: bookdoc});
+        user.findById(bookdoc.owner,function(err,userdoc){
+            bookdoc.owner = userdoc.name;print(bookdoc);
+            res.send(bookdoc);
+            // res.render("detail", {title: 'detail', datas: bookdoc});
         })
 
     });
-});
+})
 //参与排队看书
 router.get("/bookHunger", function (req, res) {
     var userId = sessionUserId(req, res);
@@ -373,6 +378,7 @@ router.post("/feelAdd", function (req, res) {
     userM.findById(userId, function (err, userdoc) {
         var feelM = global.dbHandel.getModel("feel");
         //var bookid = req.query.bookid;
+        var now = Date.now();
         feelM.create(
             {
                 content: req.body.content,
@@ -381,15 +387,21 @@ router.post("/feelAdd", function (req, res) {
                 usernick: userdoc.nick,
                 imgSrc: userdoc.imgSrc,
                 agree: 0,
-                cdate: Date.now(),
-                udate: Date.now()
+                cdate: now,
+                udate: now
             }, function (err, feeldoc) {
                 var bookM = global.dbHandel.getModel("book");
                 bookM.findById(req.body.bookid, function (err, bookdoc) {
                     bookdoc.feels.push(feeldoc._id);
                     bookdoc.save();
                 })
-                res.redirect("/bookDetail?bookid=" + req.body.bookid);
+                // res.redirect("/bookDetail?bookid=" + req.body.bookid);
+                var data = {};
+                data.imgSrc = userdoc.imgSrc;
+                data.usernick = userdoc.nick;
+                data.content = req.body.content;
+                data.date = now;
+                res.send({status: 'OK', data: data});
             }
         )
     })
